@@ -3,7 +3,7 @@
 </template>
 <script>
 export default {
-  name: 'LinkType',
+  name: 'InputType',
   props: {
     editingKey: String,
     originValue: String

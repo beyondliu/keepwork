@@ -1,5 +1,3 @@
 export default {
-  name: 'input',
-  link: 'input',
-  src: 'media'
+  data: 'media'
 }

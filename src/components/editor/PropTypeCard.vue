@@ -1,7 +1,13 @@
 <template>
     <div class="prop-box" :class="{'active': isCardActive, 'card-only-title': !isModShow}">
         <el-row class="prop-header" type='flex' justify='space-between'>
-            <el-col>
+            <el-col v-if="prop.data === 'media'">
+                <el-radio-group v-model='mediaType'>
+                    <el-radio label="image">图片</el-radio>
+                    <el-radio label="video" disabled>视频</el-radio>
+                </el-radio-group>
+            </el-col>
+            <el-col v-else>
                 {{cardKey}}
             </el-col>
             <el-col class="card-info">
@@ -28,7 +34,8 @@ export default {
   data() {
     return {
       proptypes,
-      isModShow: null
+      isModShow: null,
+      mediaType: 'image'
     }
   },
   computed: {
@@ -89,3 +96,9 @@ export default {
   width: auto;
 }
 </style>
+<style>
+.prop-header .el-radio__label {
+  font-size: 16px;
+}
+</style>
+

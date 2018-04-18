@@ -7,9 +7,16 @@ const MOD_CMD_END = '```'
 
 const blockHelper = {
   buildJson(block) {
-    block.data = this.isMarkdownMod(block)
-      ? { md: { data: this.mdText(block) } }
-      : mdToJson(this.mdText(block))
+    if (this.isMarkdownMod(block)) {
+      block.data = { md: { data: this.mdText(block) } }
+    } else {
+      try {
+        // treat as json data first
+        block.data = JSON.parse(this.mdText(block))
+      } catch (e) {
+        block.data = mdToJson(this.mdText(block))
+      }
+    }
   },
 
   buildKey(block) {

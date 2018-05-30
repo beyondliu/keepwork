@@ -1,8 +1,10 @@
 import _ from 'lodash'
-import { keepwork } from '@/api'
+import { keepwork, GitAPI, skyDrive } from '@/api'
 import { props } from './mutations'
-import { getFileFullPathByPath, webTemplateProject } from '@/lib/utils/gitlab'
+import { getFileFullPathByPath, getFileSitePathByPath, webTemplateProject } from '@/lib/utils/gitlab'
 import { showRawForGuest as gitlabShowRawForGuest } from '@/api/gitlab'
+import LayoutHelper from '@/lib/mod/layout'
+import Cookies from 'js-cookie'
 
 const {
   LOGIN_SUCCESS,
@@ -16,7 +18,12 @@ const {
   GET_CONTRIBUTED_WEBSITE_SUCCESS,
   UPSERT_WEBSITE_SUCCESS,
   GET_WEB_TEMPLATE_CONFIG_SUCCESS,
-  SET_PAGE_STAR_DETAIL
+  GET_WEB_TEMPLATE_FILELIST_SUCCESS,
+  GET_WEB_TEMPLATE_FILE_SUCCESS,
+  SET_PAGE_STAR_DETAIL,
+  GET_SITE_LAYOUT_CONFIG_SUCCESS,
+  SAVE_SITE_LAYOUT_CONFIG_SUCCESS,
+  GET_FROM_SKY_DRIVE_SUCCESS
 } = props
 
 const actions = {
@@ -41,11 +48,12 @@ const actions = {
       getProfilePromise = getProfilePromise || new Promise(resolve => {
         keepwork.user.getProfile(null, authRequestConfig).then(profile => {
           commit(GET_PROFILE_SUCCESS, {...profile, token})
+          Cookies.set('token', token)
           resolve()
         }).catch(async e => {
           alert('尚未登陆，请登陆后访问！')
           // login for localhost test
-          if (location.hostname === 'localhost') {
+          if (process.env.HOST_ENV === 'localhost') {
             let payload = {
               username: prompt('username: '),
               password: prompt('password: ')
@@ -87,36 +95,55 @@ const actions = {
     await dispatch('initWebsite', payload)
   },
   async initWebsite({ dispatch, getters }, { name }) {
-    let { username, getWebTemplateStyle, getPersonalSiteInfoByPath } = getters
-    let { type: classify, templateName, styleName } = getPersonalSiteInfoByPath(`${username}/${name}`)
+    let { username, getWebTemplate, getPersonalSiteInfoByPath } = getters
+    let { type: categoryName, templateName } = getPersonalSiteInfoByPath(`${username}/${name}`)
 
     await dispatch('getWebTemplateConfig')
-    let { contents } = getWebTemplateStyle({ classify, templateName, styleName })
+    let webTemplate = getWebTemplate({ categoryName, templateName })
+    await dispatch('getWebTemplateFiles', webTemplate)
+    let { fileList } = webTemplate
 
-    // copy all file in template.style.contents
-    for (let {pagepath, contentUrl} of contents) {
-      let { rawBaseUrl, dataSourceUsername, projectName } = webTemplateProject
-      let contentUrlFullPath = getFileFullPathByPath(contentUrl)
-      let content = await gitlabShowRawForGuest(rawBaseUrl, dataSourceUsername, projectName, contentUrlFullPath)
-      await dispatch('gitlab/createFile', { path: `${username}/${name}/${pagepath}.md`, content, refreshRepositoryTree: false }, { root: true })
+    // copy all file in template.folder
+    for (let {path, content} of fileList) {
+      let filename = path.split('/').slice(2).join('/')
+      await dispatch('gitlab/createFile', { path: `${username}/${name}/${filename}`, content, refreshRepositoryTree: false }, { root: true })
     }
 
     // refresh repositoryTree
     await dispatch('gitlab/getRepositoryTree', {path: `${username}/${name}`, useCache: false}, { root: true })
   },
-  async getWebTemplateConfig({ commit, getters: { webTemplateConfig } }) {
+  async getWebTemplateConfig({ commit, dispatch, getters: { webTemplateConfig, getWebTemplate } }) {
     if (!_.isEmpty(webTemplateConfig)) return
     let { rawBaseUrl, dataSourceUsername, projectName, configFullPath } = webTemplateProject
-    let configMarkDown = await gitlabShowRawForGuest(rawBaseUrl, dataSourceUsername, projectName, configFullPath)
-    let configStringified = configMarkDown.replace(/^[\s`]*|[\s`]*$/g, '')
-    let config = JSON.parse(configStringified)
+    let config = await gitlabShowRawForGuest(rawBaseUrl, dataSourceUsername, projectName, configFullPath)
     commit(GET_WEB_TEMPLATE_CONFIG_SUCCESS, {config})
   },
+  async getWebTemplateFiles({ commit, dispatch }, webTemplate) {
+    await dispatch('getWebTemplateFileList', webTemplate)
+    let { fileList } = webTemplate
+    let { rawBaseUrl, dataSourceUsername, projectName } = webTemplateProject
+    await Promise.all(fileList.map(async file => {
+      let { path, content } = file
+      if (!_.isEmpty(content)) return
+      content = await gitlabShowRawForGuest(rawBaseUrl, dataSourceUsername, projectName, path)
+      content = _.isString(content) ? content : JSON.stringify(content)
+      commit(GET_WEB_TEMPLATE_FILE_SUCCESS, {file, content})
+    }))
+  },
+  async getWebTemplateFileList({ commit }, webTemplate) {
+    let { folder, fileList } = webTemplate
+    if (!_.isEmpty(fileList)) return
+    let { rawBaseUrl, projectId } = webTemplateProject
+    let gitlabForGuest = new GitAPI({url: rawBaseUrl, token: ' '})
+    fileList = await gitlabForGuest.getTree({projectId, path: `templates/${folder}`, recursive: true})
+    fileList = fileList.filter(file => file.type === 'blob')
+    commit(GET_WEB_TEMPLATE_FILELIST_SUCCESS, { webTemplate, fileList })
+  },
   async upsertWebsite(context, { name, websiteSetting: {
-    categoryName = '个 人',
-    type = 'personal', // level1 classify get templates
-    templateName = '空模板', // level2 templates .name
-    styleName = '默认样式', // level3 template.styles .name
+    categoryName = 'Basic',
+    type = 'Basic', // level1 classify get templates, seems useless in new templates solution
+    templateName = 'Basic', // level2 templates .name
+    styleName = '默认样式', // level3 template.styles .name, seems useless in new templates solution
     logoUrl = 'http://keepwork.com/wiki/assets/imgs/wiki_blank_template.png'
   } }) {
     let { commit, getters: { username, userId, authRequestConfig } } = context
@@ -161,6 +188,8 @@ const actions = {
     if (useCache && !_.isEmpty(contributedSiteList)) return
 
     let list = await keepwork.siteUser.getSiteListByMemberName({memberName: username}, authRequestConfig)
+    list = _.values(list).filter(({siteinfo, siteuser} = {}) => siteinfo && siteuser)
+
     commit(GET_CONTRIBUTED_WEBSITE_SUCCESS, {username, list})
   },
   async getWebsiteDetailInfoByPath(context, { path }) {
@@ -171,6 +200,39 @@ const actions = {
     let detailInfo = await keepwork.website.getDetailInfo({username, sitename})
 
     commit(GET_SITE_DETAIL_INFO_SUCCESS, {username, sitename, detailInfo})
+  },
+  async getSiteLayoutConfig(context, { path, editorMode = true, useCache = true }) {
+    let { commit, dispatch, getters: { siteLayoutConfigBySitePath }, rootGetters } = context
+    let sitePath = getFileSitePathByPath(path)
+    let config = siteLayoutConfigBySitePath(sitePath)
+    if (useCache && !_.isEmpty(config)) return
+
+    let layoutFilePath = LayoutHelper.layoutFilePath(sitePath)
+    await dispatch('gitlab/readFile', { path: layoutFilePath, editorMode }, { root: true }).catch(e => {
+      // ignore the error, for old site without config information
+      console.error(e)
+    })
+    let { 'gitlab/getFileByPath': gitlabGetFileByPath } = rootGetters
+    let { content } = gitlabGetFileByPath(layoutFilePath) || {}
+    config = _.isString(content) ? JSON.parse(content) : content
+    commit(GET_SITE_LAYOUT_CONFIG_SUCCESS, {sitePath, config})
+  },
+  async saveSiteLayoutConfig(context, { sitePath, layoutConfig, pages }) {
+    let { commit, dispatch, getters: { siteLayoutConfigBySitePath } } = context
+    let config = siteLayoutConfigBySitePath(sitePath)
+    let unsavedConfig = {
+      ...config,
+      layoutConfig: {
+        ..._.get(config, 'layoutConfig'),
+        ...layoutConfig
+      },
+      pages: _.merge({}, _.get(config, 'pages'), pages)
+    }
+    let content = JSON.stringify(unsavedConfig, null, 2)
+    let layoutFilePath = LayoutHelper.layoutFilePath(sitePath)
+    await dispatch('gitlab/saveFile', { path: layoutFilePath, content }, { root: true })
+    commit(SAVE_SITE_LAYOUT_CONFIG_SUCCESS, {sitePath, config: unsavedConfig})
+    dispatch('refreshSiteSettings', {sitePath}, {root: true})
   },
   async createComment(context, { url: path, content }) {
     let { dispatch, commit, getters, rootGetters } = context
@@ -220,6 +282,42 @@ const actions = {
     let { commit } = context
     let pageDetail = await keepwork.pages.getDetail({url, visitor})
     commit(SET_PAGE_STAR_DETAIL, pageDetail)
+  },
+  async refreshSkyDrive({ dispatch }, {useCache = true} = {}) {
+    await Promise.all([
+      dispatch('getInfoFromSkyDrive', {useCache}),
+      dispatch('getFileListFromSkyDrive', {useCache})
+    ])
+  },
+  async getInfoFromSkyDrive(context, {useCache = true} = {}) {
+    let { commit, getters } = context
+    let { username, skyDriveInfo, authRequestConfig } = getters
+    if (useCache && !_.isEmpty(skyDriveInfo)) return
+
+    let info = await skyDrive.info(null, authRequestConfig)
+    commit(GET_FROM_SKY_DRIVE_SUCCESS, { username, info })
+  },
+  async getFileListFromSkyDrive(context, {useCache = true} = {}) {
+    let { commit, getters } = context
+    let { username, skyDriveFileList, authRequestConfig } = getters
+    if (useCache && !_.isEmpty(skyDriveFileList)) return
+
+    let filelist = await skyDrive.list({pageSize: 100000}, authRequestConfig)
+    commit(GET_FROM_SKY_DRIVE_SUCCESS, { username, filelist })
+  },
+  async uploadFileToSkyDrive(context, {file, onProgress}) {
+    let { dispatch, getters: { authRequestConfig } } = context
+    await dispatch('getProfile')
+    let url = await skyDrive.upload({file, onProgress}, authRequestConfig)
+    return url
+  },
+  async removeFileFromSkyDrive(context, {file}) {
+    let { getters: { authRequestConfig } } = context
+    await skyDrive.remove({file}, authRequestConfig)
+  },
+  async changeFileNameInSkyDrive(context, {_id, filename}) {
+    let { getters: { authRequestConfig } } = context
+    await skyDrive.changeFileName({_id, filename}, authRequestConfig)
   }
 }
 

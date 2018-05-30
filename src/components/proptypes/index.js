@@ -5,6 +5,8 @@ import board from './BoardType'
 import autoSizeInput from './AutoSizeInputType'
 import linkTarget from './LinkTargetType'
 import switchButton from './SwitchButtonType'
+import gallery from './GalleryType'
+import filter from './FilterType'
 
 export default {
   input,
@@ -13,5 +15,7 @@ export default {
   board,
   autoSizeInput,
   linkTarget,
-  switchButton
+  switchButton,
+  gallery,
+  filter
 }

@@ -5,7 +5,6 @@ import Vuex from 'vuex'
 import VueI18n from 'vue-i18n'
 import fullscreen from 'vue-fullscreen'
 import VueClipboard from 'vue-clipboard2'
-// import '@/assets/iconfont/iconfont.css'
 import 'element-ui/lib/theme-chalk/index.css'
 import EditorPage from './EditorPage'
 import router from './editor.router'
@@ -13,6 +12,9 @@ import { editorModule, userModule, gitlabModule, createPersistedState } from '@/
 import ElementUI from 'element-ui'
 import { broadcast } from 'vuex-iframe-sync'
 import { messages as i18nMessages, locale } from '@/lib/utils/i18n'
+import handleMessage from '@/lib/iframe'
+
+window.addEventListener('message', handleMessage)
 
 Vue.use(fullscreen)
 Vue.use(VueClipboard)
@@ -38,7 +40,7 @@ const store = new Vuex.Store({
   },
   plugins: [
     createPersistedState({
-      paths: ['user'] // , 'gitlab', 'editor']
+      paths: ['user', 'editor'] // , 'gitlab']
     }),
     broadcast('frameViewport')
   ]

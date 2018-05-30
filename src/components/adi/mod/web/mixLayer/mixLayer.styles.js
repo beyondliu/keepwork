@@ -63,6 +63,12 @@ export default [
           'padding-left': '20px',
           'padding-right': '20px'
         }
+      },
+      '@media only screen and (min-width: 768px)': {
+        colParagraph: {
+          height: '490px',
+          'overflow': 'auto'
+        }
       }
     },
     props: {
@@ -80,7 +86,15 @@ export default [
     options: {
       config: { ...emptyData }
     },
-    cover: require('@/../static/adi/mixLayer/mix1.png')
+    cover: require('@/../static/adi/mixLayer/mix1.png'),
+    preview: {
+      outter: {
+        height: '176px'
+      },
+      inner: {
+        'margin-top': '-20px'
+      }
+    }
   },
   // style 1
   {
@@ -127,6 +141,12 @@ export default [
           'padding-left': '20px',
           'padding-right': '20px'
         }
+      },
+      '@media only screen and (min-width: 768px)': {
+        colParagraph: {
+          height: '490px',
+          'overflow': 'auto'
+        }
       }
     },
     props: {
@@ -144,7 +164,15 @@ export default [
     options: {
       config: { ...emptyData }
     },
-    cover: require('@/../static/adi/mixLayer/mix2.png')
+    cover: require('@/../static/adi/mixLayer/mix2.png'),
+    preview: {
+      outter: {
+        height: '176px'
+      },
+      inner: {
+        'margin-top': '-20px'
+      }
+    }
   },
   // style 2
   {
@@ -191,6 +219,12 @@ export default [
           'padding-left': '20px',
           'padding-right': '20px'
         }
+      },
+      '@media only screen and (min-width: 768px)': {
+        colParagraph: {
+          height: '490px',
+          'overflow': 'auto'
+        }
       }
     },
     props: {
@@ -208,7 +242,15 @@ export default [
     options: {
       config: { ...emptyData }
     },
-    cover: require('@/../static/adi/mixLayer/mix3.png')
+    cover: require('@/../static/adi/mixLayer/mix3.png'),
+    preview: {
+      outter: {
+        height: '176px'
+      },
+      inner: {
+        'margin-top': '-20px'
+      }
+    }
   },
   // style 3
   {
@@ -253,6 +295,12 @@ export default [
           'padding-left': '20px',
           'padding-right': '20px'
         }
+      },
+      '@media only screen and (min-width: 768px)': {
+        colParagraph: {
+          height: '300px',
+          'overflow': 'auto'
+        }
       }
     },
     props: {
@@ -270,7 +318,15 @@ export default [
     options: {
       config: { ...emptyData }
     },
-    cover: require('@/../static/adi/mixLayer/mix4.png')
+    cover: require('@/../static/adi/mixLayer/mix4.png'),
+    preview: {
+      outter: {
+        height: '176px'
+      },
+      inner: {
+        'margin-top': '-20px'
+      }
+    }
   },
   // style 4
   {
@@ -316,6 +372,12 @@ export default [
           'padding-left': '20px',
           'padding-right': '20px'
         }
+      },
+      '@media only screen and (min-width: 768px)': {
+        colParagraph: {
+          height: '300px',
+          'overflow': 'auto'
+        }
       }
     },
     props: {
@@ -333,7 +395,15 @@ export default [
     options: {
       config: { ...emptyData }
     },
-    cover: require('@/../static/adi/mixLayer/mix5.png')
+    cover: require('@/../static/adi/mixLayer/mix5.png'),
+    preview: {
+      outter: {
+        height: '176px'
+      },
+      inner: {
+        'margin-top': '-20px'
+      }
+    }
   },
   // style 5
   {
@@ -379,6 +449,12 @@ export default [
           'padding-left': '20px',
           'padding-right': '20px'
         }
+      },
+      '@media only screen and (min-width: 768px)': {
+        colParagraph: {
+          height: '300px',
+          'overflow': 'auto'
+        }
       }
     },
     props: {
@@ -396,7 +472,15 @@ export default [
     options: {
       config: { ...emptyData }
     },
-    cover: require('@/../static/adi/mixLayer/mix6.png')
+    cover: require('@/../static/adi/mixLayer/mix6.png'),
+    preview: {
+      outter: {
+        height: '176px'
+      },
+      inner: {
+        'margin-top': '-20px'
+      }
+    }
   },
   // style 6
   {
@@ -441,6 +525,12 @@ export default [
           'padding-left': '20px',
           'padding-right': '20px'
         }
+      },
+      '@media only screen and (min-width: 768px)': {
+        colParagraph: {
+          height: '150px',
+          'overflow': 'auto'
+        }
       }
     },
     props: {
@@ -458,7 +548,15 @@ export default [
     options: {
       config: { ...emptyData }
     },
-    cover: require('@/../static/adi/mixLayer/mix7.png')
+    cover: require('@/../static/adi/mixLayer/mix7.png'),
+    preview: {
+      outter: {
+        height: '176px'
+      },
+      inner: {
+        'margin-top': '-20px'
+      }
+    }
   },
   // style 7
   {
@@ -504,6 +602,12 @@ export default [
           'padding-left': '20px',
           'padding-right': '20px'
         }
+      },
+      '@media only screen and (min-width: 768px)': {
+        colParagraph: {
+          height: '150px',
+          'overflow': 'auto'
+        }
       }
     },
     props: {
@@ -521,7 +625,15 @@ export default [
     options: {
       config: { ...emptyData }
     },
-    cover: require('@/../static/adi/mixLayer/mix8.png')
+    cover: require('@/../static/adi/mixLayer/mix8.png'),
+    preview: {
+      outter: {
+        height: '176px'
+      },
+      inner: {
+        'margin-top': '-20px'
+      }
+    }
   },
   // style 8
   {
@@ -567,6 +679,12 @@ export default [
           'padding-left': '20px',
           'padding-right': '20px'
         }
+      },
+      '@media only screen and (min-width: 768px)': {
+        colParagraph: {
+          height: '150px',
+          'overflow': 'auto'
+        }
       }
     },
     props: {
@@ -584,6 +702,14 @@ export default [
     options: {
       config: { ...emptyData }
     },
-    cover: require('@/../static/adi/mixLayer/mix9.png')
+    cover: require('@/../static/adi/mixLayer/mix9.png'),
+    preview: {
+      outter: {
+        height: '176px'
+      },
+      inner: {
+        'margin-top': '-20px'
+      }
+    }
   }
 ]

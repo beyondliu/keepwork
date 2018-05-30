@@ -12,7 +12,8 @@
 </template>
 
 <script>
-import mods from '@/components/adi/mod'
+import ModLoader from '@/components/adi/mod'
+import VueScrollTo from 'vue-scrollto'
 import { mapGetters } from 'vuex'
 import { gConst } from '@/lib/global'
 
@@ -26,6 +27,11 @@ export default {
       gConst
     }
   },
+  watch: {
+    isActive(newVal) {
+      if (newVal) this.scrollToCurrentMod()
+    }
+  },
   computed: {
     ...mapGetters({
       activeMod: 'activeMod'
@@ -34,7 +40,7 @@ export default {
       if (this.modConf) return this.modConf.mod
     },
     modConf() {
-      return mods[this.mod.modType]
+      return ModLoader.load(this.mod.modType)
     },
     isActive() {
       return this.activeMod && this.mod.key === this.activeMod.key
@@ -50,6 +56,15 @@ export default {
     },
     setActive() {
       this.$store.dispatch('setActiveMod', this.mod.key)
+    },
+    scrollToCurrentMod() {
+      const options = {
+        easing: 'ease-in',
+        offset: -30,
+        x: false,
+        y: true
+      }
+      VueScrollTo.scrollTo(this.$el, 500, options)
     }
   }
 }

@@ -2,7 +2,7 @@
   <div class="prop-box" :class="{'active': isCardActive, 'card-only-title': !isModShow}">
     <el-row class="prop-header" type='flex' justify='space-between'>
       <el-col>
-        {{cardKey}}
+        {{$t("card." + cardKey)}}
       </el-col>
       <el-col class="card-info">
         <el-switch :width='32' v-model="isModShow" active-color="#3ba4ff" inactive-color='#bfbfbf' @change='toggleModVisible'>
@@ -10,7 +10,7 @@
       </el-col>
     </el-row>
     <el-row class="prop-item" v-if="isModShow" :prop='prop' v-for='(propItem, index) in prop' :key='index'>
-      <component :is='proptypes[propItem]' :prop='prop' :editingKey='index' :originValue='cardValue[index]' @onPropertyChange='changeProptyData' @onChangeValue='changeActivePropty'></component>
+      <component :is='proptypes[propItem]' :prop='prop' :editingKey='index' :originValue='cardValue[index]' :activePropertyOptions='activePropertyOptions' @onPropertyChange='changeProptyData' @onChangeValue='changeActivePropty'></component>
     </el-row>
   </div>
 </template>
@@ -23,7 +23,8 @@ export default {
     cardKey: String,
     cardValue: Object,
     prop: Object,
-    isCardActive: Boolean
+    activePropertyOptions: Object,
+    isCardActive: Boolean,
   },
   data() {
     return {
@@ -36,7 +37,7 @@ export default {
     }),
     isModShow: {
       get() {
-        return !this.cardValue.hidden
+        return this.cardValue && !this.cardValue.hidden
       },
       set() {}
     }

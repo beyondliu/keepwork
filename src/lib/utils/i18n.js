@@ -4,11 +4,16 @@ import enLocale from 'element-ui/lib/locale/lang/en'
 import zhLocale from 'element-ui/lib/locale/lang/zh-CN'
 
 export const messages = {
-  'zh-CN': { ...enLocale, ...zhCN },
-  'en-US': { ...zhLocale, ...enUS }
+  'zh-CN': { ...zhLocale, ...zhCN },
+  'en-US': { ...enLocale, ...enUS }
 }
 
-export const locale = (navigator.language || 'zh-CN')
+export const locale = (() => {
+  let oldVersionKeepworkLocale = localStorage['keepwork-language-locale']
+  let result = oldVersionKeepworkLocale || navigator.language || 'zh-CN'
+  result = /^zh/.test(result) ? 'zh-CN' : 'en-US'
+  return result
+})()
 
 export default {
   locale,

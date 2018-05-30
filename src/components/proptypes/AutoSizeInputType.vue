@@ -1,18 +1,20 @@
 <template>
-    <el-input type='textarea' ref='autosizeTextarea' class="autosize-input-type" :autosize="{ maxRows: maxRows}" resize='none' :placeholder='editingKey' v-model='inputTypeValue' @change='updateValue' @focus='getFocus' @blur='blurEventHandler'></el-input>
+  <el-input type='textarea' ref='autosizeTextarea' class="autosize-input-type" :autosize="{ minRows:7, maxRows: maxRows }" resize='none' :placeholder="$t('field.' + editingKey)" v-model='inputTypeValue' @change='updateValue' @focus='getFocus' @blur='blurEventHandler' @input='inputValue'></el-input>
 </template>
 <script>
-const blurMaxRows = 2
-const focusMaxRows = 20
+const blurMinRows = 7
+const focusMinRows = 20
+
 export default {
-  name: 'LinkType',
+  name: 'AutoSizeInputType',
   props: {
     editingKey: String,
     originValue: String
   },
   data() {
     return {
-      maxRows: blurMaxRows
+      maxRows: blurMinRows,
+      onFocus: false
     }
   },
   computed: {
@@ -31,16 +33,22 @@ export default {
     },
     getFocus() {
       this.$emit('onChangeValue')
-      this.maxRows = focusMaxRows
+      this.onFocus = true
+      this.maxRows = focusMinRows
       this.$nextTick(function() {
         this.$refs.autosizeTextarea.resizeTextarea()
       })
     },
-    blurEventHandler(){
-      this.maxRows = blurMaxRows
+    blurEventHandler() {
+      this.maxRows = blurMinRows
+      this.onFocus = false
       this.$nextTick(function() {
         this.$refs.autosizeTextarea.resizeTextarea()
       })
+    },
+    inputValue(newVal) {
+      // sometimes input event can be triggered without focus, for example, the grammarly plugin for chrome
+      if (!this.onFocus) this.updateValue(newVal)
     }
   }
 }

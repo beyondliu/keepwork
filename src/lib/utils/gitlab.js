@@ -1,13 +1,15 @@
 import _ from 'lodash'
 
 export const EMPTY_GIT_FOLDER_KEEPER = '.gitignore.md'
+export const CONFIG_FOLDER_NAME = '_config'
 
-let protocol = (location && location.protocol) ? location.protocol : 'http:'
+let protocol = location && location.protocol ? location.protocol : 'http:'
 export const webTemplateProject = {
   rawBaseUrl: `${protocol}//git.keepwork.com`,
   dataSourceUsername: 'gitlab_rls_official',
-  projectName: 'keepworktemplate',
-  configFullPath: 'official/template/webTemplateConfig.md'
+  projectName: 'keepwork-template-v2',
+  projectId: 36332,
+  configFullPath: 'config.json'
 }
 
 /*doc
@@ -22,8 +24,15 @@ export const gitTree2NestedArray = (files, rootPath) => {
   let treeWithChildren = {}
 
   files.forEach(file => {
-    let setKeys = file.path.substr(rootPath.length + 1).split('/').join(`${keysSeperator}${temporaryChildrenKey}${keysSeperator}`).split(keysSeperator)
-    let temporaryObject = _.set({}, setKeys, {...file})
+    if (file.path.indexOf(rootPath) !== 0 || file.path === rootPath) return
+    let setKeys = file.path
+      .substr(rootPath.length + 1)
+      .split('/')
+      .join(`${keysSeperator}${temporaryChildrenKey}${keysSeperator}`)
+      .split(keysSeperator)
+    // _.setWith Object
+    // _.set will handle number in setKeys with Array, that's not what we want
+    let temporaryObject = _.setWith({}, setKeys, { ...file }, Object)
     _.merge(treeWithChildren, temporaryObject)
   })
 
@@ -37,8 +46,10 @@ export const gitTree2NestedArray = (files, rootPath) => {
     return tree
   }
 
-  let nestedArray = convertChildren2ArrayInTree({[temporaryChildrenKey]: treeWithChildren})['children']
-  return nestedArray
+  let nestedArray = convertChildren2ArrayInTree({
+    [temporaryChildrenKey]: treeWithChildren
+  })['children']
+  return _.isEmpty(nestedArray) ? [] : nestedArray
 }
 
 /*doc
@@ -54,10 +65,15 @@ export const suffixFileExtension = (() => {
   return (str, fileExtension = 'md') => {
     let cacheKey = str + fileExtension
     if (!cache[cacheKey]) {
-      let suffixStr = '.' + fileExtension
-      let strArr = str.split(suffixStr)
-      if (strArr[strArr.length - 1] !== '') strArr[strArr.length] = ''
-      cache[cacheKey] = strArr.join(suffixStr)
+      // ignore json file, todo: add more ignore file suffix
+      if (/\.json$/.test(str)) {
+        cache[cacheKey] = str
+      } else {
+        let suffixStr = '.' + fileExtension
+        let strArr = str.split(suffixStr)
+        if (strArr[strArr.length - 1] !== '') strArr[strArr.length] = ''
+        cache[cacheKey] = strArr.join(suffixStr)
+      }
     }
     return cache[cacheKey]
   }
@@ -82,7 +98,9 @@ export const getFileFullPathByPath = (() => {
       let [username, name, ...pagenames] = path.split('/').filter(x => x)
       let isSiteRootPath = !pagenames.length
 
-      let fullPathNames = isSiteRootPath ? [username, name, 'index'] : [username, name, ...pagenames]
+      let fullPathNames = isSiteRootPath
+        ? [username, name, 'index']
+        : [username, name, ...pagenames]
       let fullPath = fullPathNames.join('/')
       fullPath = suffixFileExtension(fullPath, 'md')
       cache[cacheKey] = fullPath
@@ -91,10 +109,51 @@ export const getFileFullPathByPath = (() => {
   }
 })()
 
+export const getFileSitePathByPath = path => {
+  let [username, name] = path.split('/').filter(x => x)
+  return [username, name].join('/')
+}
+
+export const getRelativePathByPath = path => {
+  let [, , ...subPaths] = path.split('/').filter(x => x)
+  return subPaths.join('/')
+}
+
+export const getPageInfoByPath = path => {
+  let pageInfos = path.split('/').filter(x => x)
+  let [username, sitename] = pageInfos
+  let isLegal = username && sitename
+  let sitepath = isLegal ? `${username}/${sitename}` : ''
+  let fullPath = isLegal ? getFileFullPathByPath(path) : ''
+  let barePath = fullPath.replace(/\.md$/, '')
+  let [, , ...paths] = fullPath.split('/').filter(x => x)
+  let relativePath = paths.join('/')
+  let bareRelativePath = relativePath.replace(/\.md$/, '')
+  return { username, sitename, isLegal, barePath, fullPath, sitepath, paths, relativePath, bareRelativePath }
+}
+
+/**
+ * @param {*} filename string
+ * @param {*} ext string
+ * ('filename', 'ext') => 'filename.ext'
+ * ('filename.ext', 'ext') => 'filename.ext'
+ */
+export const getFilenameWithExt = (filename, ext) => {
+  let filenameExt = /.+\./.test(filename) ? filename.split('.').pop() : ''
+  filenameExt = filenameExt.toLowerCase()
+  filename = filenameExt !== ext ? `${filename}.${ext}` : filename
+  return filename
+}
+
 export default {
   EMPTY_GIT_FOLDER_KEEPER,
+  CONFIG_FOLDER_NAME,
   webTemplateProject,
   gitTree2NestedArray,
   suffixFileExtension,
-  getFileFullPathByPath
+  getFileFullPathByPath,
+  getFileSitePathByPath,
+  getRelativePathByPath,
+  getPageInfoByPath,
+  getFilenameWithExt
 }

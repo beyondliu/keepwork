@@ -24,7 +24,7 @@ export const gTheme = {
       'padding-bottom': gThemeData['mod-space-computer']
     }
   },
-  '@media only screen and (max-width: 1080px)': {
+  '@media only screen and (max-width: 1079px)': {
     'mod-full-width': {
       padding: '0 20px'
     },
@@ -36,8 +36,11 @@ export const gTheme = {
 }
 
 export const gConst = {
+  GIT_FILE_UPLOAD_MAX_SIZE: 1024 * 1024 * 10, // 10M
   POSITION_BEFORE: 'before',
-  POSITION_AFTER: 'after'
+  POSITION_AFTER: 'after',
+  ADDING_AREA_ADI: 'ADI',
+  ADDING_AREA_MARKDOWN: 'Markdown'
 }
 
 export default {

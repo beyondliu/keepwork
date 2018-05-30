@@ -12,7 +12,12 @@ const GET_SITE_DETAIL_INFO_SUCCESS = 'GET_SITE_DETAIL_INFO_SUCCESS'
 const GET_CONTRIBUTED_WEBSITE_SUCCESS = 'GET_CONTRIBUTED_WEBSITE_SUCCESS'
 const UPSERT_WEBSITE_SUCCESS = 'UPSERT_WEBSITE_SUCCESS'
 const GET_WEB_TEMPLATE_CONFIG_SUCCESS = 'GET_WEB_TEMPLATE_CONFIG_SUCCESS'
+const GET_WEB_TEMPLATE_FILELIST_SUCCESS = 'GET_WEB_TEMPLATE_FILELIST_SUCCESS'
+const GET_WEB_TEMPLATE_FILE_SUCCESS = 'GET_WEB_TEMPLATE_FILE_SUCCESS'
 const SET_PAGE_STAR_DETAIL = 'SET_PAGE_STAR_DETAIL'
+const GET_SITE_LAYOUT_CONFIG_SUCCESS = 'GET_SITE_LAYOUT_CONFIG_SUCCESS'
+const SAVE_SITE_LAYOUT_CONFIG_SUCCESS = 'SAVE_SITE_LAYOUT_CONFIG_SUCCESS'
+const GET_FROM_SKY_DRIVE_SUCCESS = 'GET_FROM_SKY_DRIVE_SUCCESS'
 
 export const props = {
   LOGIN_SUCCESS,
@@ -26,7 +31,12 @@ export const props = {
   GET_CONTRIBUTED_WEBSITE_SUCCESS,
   UPSERT_WEBSITE_SUCCESS,
   GET_WEB_TEMPLATE_CONFIG_SUCCESS,
-  SET_PAGE_STAR_DETAIL
+  GET_WEB_TEMPLATE_FILELIST_SUCCESS,
+  GET_WEB_TEMPLATE_FILE_SUCCESS,
+  SET_PAGE_STAR_DETAIL,
+  GET_SITE_LAYOUT_CONFIG_SUCCESS,
+  SAVE_SITE_LAYOUT_CONFIG_SUCCESS,
+  GET_FROM_SKY_DRIVE_SUCCESS
 }
 
 const doNothing = state => {
@@ -83,8 +93,36 @@ const mutations = {
   [GET_WEB_TEMPLATE_CONFIG_SUCCESS](state, {config}) {
     Vue.set(state, 'webTemplateConfig', config)
   },
+  [GET_WEB_TEMPLATE_FILELIST_SUCCESS](state, {webTemplate, fileList}) {
+    Vue.set(webTemplate, 'fileList', fileList)
+  },
+  [GET_WEB_TEMPLATE_FILE_SUCCESS](state, {file, content}) {
+    Vue.set(file, 'content', content)
+  },
   [SET_PAGE_STAR_DETAIL](state, { starred, starredCount }) {
     Vue.set(state, 'activePageStarInfo', { starred, starredCount })
+  },
+  [GET_SITE_LAYOUT_CONFIG_SUCCESS](state, { sitePath, config }) {
+    Vue.set(state, 'siteLayoutConfigs', {
+      ...state.siteLayoutConfigs,
+      [sitePath]: config
+    })
+  },
+  [SAVE_SITE_LAYOUT_CONFIG_SUCCESS](state, { sitePath, config }) {
+    Vue.set(state, 'siteLayoutConfigs', {
+      ...state.siteLayoutConfigs,
+      [sitePath]: config
+    })
+  },
+  [GET_FROM_SKY_DRIVE_SUCCESS](state, payload) {
+    let { username } = payload
+    Vue.set(state, 'skyDrive', {
+      ...state.skyDrive,
+      [username]: {
+        ..._.get(state, ['skyDrive', username]),
+        ...payload
+      }
+    })
   }
 }
 

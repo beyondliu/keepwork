@@ -1,8 +1,8 @@
 <template>
   <div class="block">
     <el-carousel :height="options.height">
-      <el-carousel-item v-for="(item, index) in forImgs" :key="index">
-        <div class="imgs" :style="loadImg(item)"></div>
+      <el-carousel-item v-for="(item, index) in forImgs" :key="index" v-if="item.img && item.img.length != 0">
+        <a :target="properties.target" :href="item.link"><div class="imgs" :style="loadImg(item)"></div></a>
       </el-carousel-item>
     </el-carousel>
   </div>

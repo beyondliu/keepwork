@@ -75,7 +75,7 @@ export default {
             this.openEditor()
           }}
         >
-          打开绘图板
+          {this.$t('card.openBoard')}
         </el-button>
         <el-dialog {...this.getDialogProps}>
           <div id="mx-client" />
@@ -92,9 +92,7 @@ export default {
     )
   },
   data() {
-    return {
-      visible: false
-    }
+    return {}
   },
   computed: {
     inputTypeValue: {
@@ -120,33 +118,52 @@ export default {
       }
 
       return { props, on }
+    },
+    visible: {
+      get() {
+        return this.activePropertyOptions ? this.activePropertyOptions.visible : false
+      },
+      set(state) {
+        this.setActivePropertyOptions({visible: state})
+      }
     }
   },
   methods: {
     ...mapActions({
       setActiveProperty: 'setActiveProperty',
+      setActivePropertyOptions: 'setActivePropertyOptions',
       setActivePropertyData: 'setActivePropertyData'
     }),
     ...mapGetters({
       activeProperty: 'activeProperty'
     }),
     loadBoardEditor() {
-      if (!isInitEditor) {
+      if (window.mxClient && !isInitEditor) {
         initEditor(this.inputTypeValue, ui => {
           this.ui = ui
         })
+      } else {
+        setTimeout(this.loadBoardEditor, 500)
       }
     },
     changeProptyData(changedData) {
-      // this.changeActivePropty()
       this.setActivePropertyData({
         data: changedData
       })
     },
     openEditor() {
-      this.visible = true
+      if (Boolean(window.mxClient)) {
+        this.$emit('onChangeValue')
+        this.visible = true
+      } else {
+        setTimeout(this.openEditor, 500)
+      }
     },
     closeEditor() {
+      if(!this.ui || !this.ui.getCurrentCompressData) {
+        return
+      }
+
       this.visible = false
       isInitEditor = false
 

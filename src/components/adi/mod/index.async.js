@@ -1,4 +1,5 @@
 const ModMarkdown = () => import('./common/markdown')
+const ModIFrame = () => import('./common/iframe')
 const ModTitle = () => import('./web/title')
 const ModMixPosition = () => import('./web/mixPosition')
 const ModMixLayer = () => import('./web/mixLayer')
@@ -11,13 +12,19 @@ const ModText = () => import('./web/text')
 const ModVipRead = () => import('./web/vipRead')
 const ModComment = () => import('./web/comment')
 const ModBoard = () => import('./web/board')
+const ModTextBoard = () => import('./web/textBoard')
+const ModPageList = () => import('./web/pageList')
+const ModToc = () => import('./web/toc')
+const ModBigFile = () => import('./web/bigFile')
 
-export default {
+export const modList = {
   ModMarkdown,
+  ModIFrame,
   ModTitle,
   ModMixPosition,
   ModMixLayer,
   ModImg,
+  ModMenu,
   ModImgLoop,
   ModParacraft,
   ModQQ,
@@ -25,5 +32,18 @@ export default {
   ModVipRead,
   ModComment,
   ModBoard,
-  ModMenu
+  ModTextBoard,
+  ModPageList,
+  ModToc,
+  ModBigFile
+}
+
+export const load = async modName => {
+  const mod = modList[modName]
+
+  if (mod) return mod()
+}
+
+export default {
+  load
 }

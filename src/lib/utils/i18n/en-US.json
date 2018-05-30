@@ -1,25 +1,214 @@
 {
   "common": {
     "welcomeToKeepwork": "Welcome to Keepwork",
-    "createNewWebsite": "Create New Website"
+    "createNewWebsite": "Create New Website",
+
+    "features": "Features",
+    "applicationCenter": "Application center",
+    "myHomePage": "My home page",
+    "websiteManagement": "Website Management",
+    "pageEditor": "Page editor",
+    "myWebDisk": "My web disk",
+    "dynamic": "Dynamic",
+    "attention": "Attention",
+    "history": "History",
+    "help": "Help",
+    "iicc": "IICC",
+
+    "openPlatform": "Open platform",
+    "joinUs": "Join us",
+    "websiteStatistics": "Website statistics",
+    "updateInformation": "Update information",
+    "feedback": "Feedback",
+    "complaintPage": "Complaint page",
+    "poweredByNPL": "Powered By NPL",
+    "simplifiedChinese": "Simplified Chinese",
+
+    "caseNumberA": "ICP 14002196 -2, Guangdong Province",
+    "caseNumberB": "© Tatfook",
+
+    "iShare": "I share",
+    "shareToYouA": "with you on the website created by KEEPWORK.COM",
+    "shareToYouB": "Share to you",
+    "maded": "maded",
+    "websiteB": "website",
+    "QR": "Scan QR to share",
+    "error": "Error, please try again"
   },
   "editor": {
     "save": "Save",
+    "saveSuccess": "File saved successfully",
+    "saveFail": "File save failed",
+    "unsavedTip": "File content is unsaved",
+    "copySuccess": "Link copied successfully",
+    "copyFail": "Link copy failed",
+
     "preview": "Preview",
     "code": "Code",
     "splitScreen": "Split",
 
+    "system": "System",
+    "page": "Page",
+    "edit": "Edit",
+    "insert": "Insert",
+    "help": "Help",
+    "backHomePage": "Back home page",
+    "newWebsite": "New web site",
+    "siteSettings": "Site settings",
+    "dataSource": "Data source",
+    "revoke": "Revoke",
+    "redo": "Redo",
+    "module": "Module",
+
     "refresh": "Refresh",
     "close": "Close",
     "delete": "Delete",
+    "delConfirm": "OK to delete at",
+    "nameSingle": "name",
+    "name": "Name",
+    "link": "Link",
+    "setting": "Setting",
+    "create": "Create",
+
+    "folder": "Folder",
+    "newPage": "New page",
+    "newFolder": "New folder",
+    "website": "Web page",
+
+    "emptyName": "name cannot be empty",
+    "nameRule": "name can only be composed of letters, numbers and underscores",
+    "nameUnderline": "name cannot begin with an underscore",
+    "nameExist": "a file of the same name already exists",
 
     "openedFiles": "Opened",
     "myPersonalWebsites": "Personal websites",
     "myContributedWebsites": "Contributed websites",
-    "myContributedWebsitesTip": "Others' websites will be here after you get authorization",
-    
+    "myContributedWebsitesTip":
+      "Others' websites will be here after you get authorization",
+
     "noPersonalWebsite": "No personal website",
-    "createWebsiteNow": "Create Website Now"
+    "createWebsiteNow": "Create Website Now",
+
+    "addMod": "Please click to add module",
+    "showCode": "Display code",
+
+    "modAttr": "Attributes",
+    "modStyle": "style",
+    "modDel": "Delete module",
+    "modDelMsg": "Are you sure to delete this module?",
+    "modDelMsgTitle": "Delete prompt",
+
+    "selfWindowOpen": "This window opens",
+    "newWindowOpen": "open in a new window",
+    "openMenuEditor": "Open the menu editor",
+    "openGalleryEditor": "Open the picture editor",
+    "menuEditor": "Menu Editor",
+    "galleryEditor": "Picture editor",
+    "imgSrc": "The map's address",
+    "insertAfter": "Add later",
+    "insertBefore": "Added before",
+    "insertChild": "Add children",
+    "noData": "No data, please add",
+    "delNotice": "Delete reminder",
+    "menuDelMsg":
+      "Are you sure to delete this node? Child nodes are also deleted directly",
+    "menuItem": "Menu Item",
+    "fullScreen": "Full Screen",
+    "exitFullScreen": "Exit Full Screen",
+    "title": "Title",
+    "bold": "Bold",
+    "italic": "Italic",
+    "horizontalDiv": "Horizontal Dividingline",
+
+    "selectSiteTemplate": "Select site template",
+    "setAccessAddress": "Set the website's access address",
+    "theNextStep": "Next",
+    "previous": "Previous",
+    "startEditing": "Start editing",
+    "unchangeable": "Cannot be modified after setting",
+    "vipForwarding": "VIP can set cname forwarding in website settings",
+    "URL": "URL:",
+    "canNotBeEmpty": "Can not be empty",
+    "alreadyExists": "Website with the same name already exists",
+    "defaultStyle": "Default style",
+    "forExample": "For example: mysite123",
+
+    "websiteNameCanOnly":
+      "Website name can only consist of letters, numbers and underscores",
+    "setWebsiteName":
+      "You can also set the site name on the site settings page",
+    "privatePermissions":
+      "Open VIP, additional support for privileges such as private permissions and rights management",
+    "createdSuccessfully":
+      "Congratulations, the website was created successfully",
+    "lowerCaseLetters":
+      "Can use lowercase letters, numbers (example: mysite123)",
+    "cannotBeginWithAnUnderscore":
+      "Website name cannot start with an underscore",
+
+    "openRegularExpressionEditor": "Editor",
+    "matchingRule": "The matching rule：",
+    "pageListLogic": "The page list logic",
+    "supportWildcard":
+      "Support wildcard: * (represents lots of charachter) , ? (represents a charachter)",
+    "supportBooleanCalculation":
+      "Support Boolean calculation: || (or)、&& (and)、! (not)",
+    "layoutPlan": "1. Layout plan",
+    "addLayout": "Add layout",
+    "default": "Default",
+    "rename": "Rename",
+
+    "layoutStyle": "2. Layout style",
+    "header": "header",
+    "sidebar": "sidebar",
+    "footer": "footer",
+    "aside": "aside",
+    "main": "main",
+
+    "layoutParameters": "3. Layout parameters",
+    "match": "match",
+    "cancel": "Cancel",
+    "keepOneLayout": "Keep one layout at least",
+
+    "deleteFolder": "Be sure to delete the folder and inside documents ?",
+    "documents": " documents ?",
+    "areYouSureYouWantToDeleteThisFolder":
+      "Are you sure you want to delete this folder ?",
+    "videoNotSupport": "Your browser does not support the video tag.",
+    "notFound": "Content cannot be found"
+  },
+  "modList": {
+    "recent": "Commonly used",
+    "markdown": "Markdown",
+    "bigFile": "Big file",
+
+    "text": "Text",
+    "navigation": "Navigation",
+    "menu": "Menu",
+    "headNavigation": "Head navigation",
+
+    "graphic": "Graphic",
+    "carousel": "Carousel",
+    "widescreenImage": "Widescreen image",
+    "board": "Board",
+
+    "mixLayer": "Mix layer",
+    "mixPosition": "Mix position",
+    "interative": "Interactive",
+    "qq": "Call QQ chat",
+    "mixAndMatch": "Mix and match",
+    "paracraft": "Paracraft works",
+    "works": "Works",
+    "specialPerformance": "Special performance",
+
+    "vipRead": "VIP Read",
+    "comment": "Comment",
+    "setting": "Setting",
+    "pageList": "Page list",
+    "textBoard": "Text Board",
+    "toc": "Markdown list",
+
+    "other": "Other"
   },
   "adi": {
     "markdown": {
@@ -35,21 +224,33 @@
     },
     "text": {
       "title": "Ljubljana",
-      "paragraph": "One travels, and it is a trip to the hometown. Before leaving, face too many questions and puzzled: Why is it alone? There are also well-intentioned reminders: Why not go to distant places! Kunming Yeah - catch a flower sea; Sanya Yea - go to a blue sky and blue sea. Just stubbornly insist on their own persistence, without any explanation. Nobody understands that this time is a farewell, or an eternal farewell, and I will go to many places that are very busy or desolate, remote or remote, and will often think of this trip. I think of the mountain, the city, those people……"
+      "paragraph":
+        "One travels, and it is a trip to the hometown. Before leaving, face too many questions and puzzled: Why is it alone? There are also well-intentioned reminders: Why not go to distant places! Kunming Yeah - catch a flower sea; Sanya Yea - go to a blue sky and blue sea. Just stubbornly insist on their own persistence, without any explanation. Nobody understands that this time is a farewell, or an eternal farewell, and I will go to many places that are very busy or desolate, remote or remote, and will often think of this trip. I think of the mountain, the city, those people……"
     },
     "mixLayer": {
       "title": "University of California",
       "subtitle": "Top Research University",
-      "paragraph": "The University of California, Berkeley is one of the most prestigious and top public research universities in the United States, located on the hills of the East Bay Berkeley, San Francisco. Founded in 1868 by the California College and the College of Agriculture, Mining, and Mechanics, it was relocated to Berkeley, near San Francisco, in 1873. Berkeley was the oldest one at the University of California. It is also a founding member of the Association of American Universities. Its mascots have changed from the emblem of California, so their students often call themselves \"Golden Bears.\" The University of California, Berkeley, along with Stanford University and the Massachusetts Institute of Technology, are honored as the academic leaders of engineering science and technology in the United States."
+      "paragraph":
+        "The University of California, Berkeley is one of the most prestigious and top public research universities in the United States, located on the hills of the East Bay Berkeley, San Francisco. Founded in 1868 by the California College and the College of Agriculture, Mining, and Mechanics, it was relocated to Berkeley, near San Francisco, in 1873. Berkeley was the oldest one at the University of California. It is also a founding member of the Association of American Universities. Its mascots have changed from the emblem of California, so their students often call themselves \"Golden Bears.\" The University of California, Berkeley, along with Stanford University and the Massachusetts Institute of Technology, are honored as the academic leaders of engineering science and technology in the United States."
     },
     "mixPosition": {
       "title": "One person, one road, people on the way",
       "subtitle": "We have been traveling",
-      "paragraph": "One travels, and it is a trip to the hometown. Before leaving, face too many questions and puzzled: Why is it alone? There are also well-intentioned reminders: Why not go to distant places! Kunming Yeah - catch a flower sea; Sanya Yea - go to a blue sky and blue sea. Just stubbornly insist on their own persistence, without any explanation. Nobody understands that this time is a farewell, or an eternal farewell, and I will go to many places that are very busy or desolate, remote or remote, and will often think of this trip. I think of the mountain, the city, those people……",
+      "paragraph":
+        "One travels, and it is a trip to the hometown. Before leaving, face too many questions and puzzled: Why is it alone? There are also well-intentioned reminders: Why not go to distant places! Kunming Yeah - catch a flower sea; Sanya Yea - go to a blue sky and blue sea. Just stubbornly insist on their own persistence, without any explanation. Nobody understands that this time is a farewell, or an eternal farewell, and I will go to many places that are very busy or desolate, remote or remote, and will often think of this trip. I think of the mountain, the city, those people……",
       "button": "MORE"
     },
     "paracraft": {
       "worldName": "Default name",
+      "paracraftTitle": {
+        "titleA": "Heart And Hands",
+        "titleB": "Introduction of works",
+        "titleC": "major function",
+        "titleD": "Related help"
+      },
+      "paracraftSubTitle": {
+        "subtitle": " —— Share from \"paracraftcreative space\""
+      },
       "author": {
         "desc": "Author:",
         "text": "Your name"
@@ -70,7 +271,8 @@
         "name": "Enter"
       },
       "desc": {
-        "data": "Work Description: \r never memorized the memory, can not remember where to go, what landscapes to see, who met. Although the classmates said that traveling is not about memory, it is at the time of lunch, lunch and dinner. May not eat well, but it is still wiped the other side of the mouth of the oil stains. It doesn't really matter what the landscape is."
+        "data":
+          "Work Description: \r never memorized the memory, can not remember where to go, what landscapes to see, who met. Although the classmates said that traveling is not about memory, it is at the time of lunch, lunch and dinner. May not eat well, but it is still wiped the other side of the mouth of the oil stains. It doesn't really matter what the landscape is."
       }
     },
     "board": {
@@ -93,5 +295,60 @@
       "close": "Comments are closed",
       "notice": "Share your ideas!"
     }
+  },
+  "card": {
+    "imgLoop": "Graphic rotation",
+    "img": "picture",
+    "media": "picture",
+    "title": "title",
+    "subtitle": "subtitle",
+    "paragraph": "text",
+    "button": "button",
+    "preview": "Cover picture",
+    "worldName": "name",
+    "author": "author",
+    "version": "version",
+    "viewTimesImg": "view Times Image",
+    "updateTime": "update time",
+    "viewTimes": "view times",
+    "size": "size",
+    "menu": "menu",
+    "logo": "icon",
+    "businessName": "main title",
+    "tagline": "subtitle",
+    "qq": "QQ number",
+    "pic": "head portrait",
+    "desc": "name",
+    "md": "Markdown document",
+    "board": "drawing board",
+    "comment": "comment",
+    "vipRead": "VIP read privileges",
+    "openBoard": "Open board",
+    "switchComment": "Comment is on",
+    "pageList": "Page list",
+    "footer": "Footer",
+    "toc": "TOC Setting",
+    "download": "Download",
+    "enter": "Enter",
+    "innerModal": "Inner modal",
+    "bigFile": "Big file",
+    "iframe": "iframe"
+  },
+  "field": {
+    "fileId": "file Id",
+    "fileType": "Field type",
+    "link": "link",
+    "src": "src",
+    "name": "name",
+    "data": "data",
+    "text": "text",
+    "desc": "desc",
+    "select": "please choose",
+    "title": "title",
+    "extraMsg": "Extra msg",
+    "channel": "channel",
+    "number": "number",
+    "width": "width",
+    "height": "height"
   }
 }

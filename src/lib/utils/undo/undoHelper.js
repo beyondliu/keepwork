@@ -4,6 +4,10 @@ export default {
       undoManager.stack.shift()
     }
   },
+  init(undoManager, initialItem) {
+    undoManager.initialItem = initialItem
+    this.clear(undoManager)
+  },
   clear(undoManager) {
     undoManager.stack = [undoManager.initialItem]
     undoManager.position = 0
@@ -24,17 +28,16 @@ export default {
   undo(undoManager, callback) {
     if (this.canUndo(undoManager)) {
       var item = undoManager.stack[--undoManager.position]
-      if (callback) {
-        callback(item)
+      if (callback && item) {
+        callback(item.newCode, item.cursor)
       }
     }
   },
   redo(undoManager, callback) {
     if (this.canRedo(undoManager)) {
       var item = undoManager.stack[++undoManager.position]
-
-      if (callback) {
-        callback(item)
+      if (callback && item) {
+        callback(item.newCode, item.cursor)
       }
     }
   },

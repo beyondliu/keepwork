@@ -11,158 +11,165 @@ import ModParacraft from './web/paracraft'
 import ModVipRead from './web/vipRead'
 import ModComment from './web/comment'
 import ModMenu from './web/menu'
+import ModTextBoard from './web/textBoard'
+// import ModPageList from './web/pageList'
+// import ModToc from './web/toc'
 
 var modsList = [
   {
     id: 1,
-    label: '常用',
+    label: 'modList.recent',
     children: [
       {
         id: '1-1',
-        label: 'Markdown',
+        label: 'modList.markdown',
         mods: [ModMarkdown]
       },
       {
         id: '1-2',
-        label: '文本',
-        mods: [ModText]
-      },
+        label: 'modList.board',
+        mods: [ModBoard]
+      }
+    ]
+  },
+  {
+    id: 2,
+    label: 'modList.navigation',
+    children: [
       {
-        id: '1-3',
-        label: '图文轮播',
-        mods: [ModImgLoop]
-      },
-      {
-        id: '1-4',
-        label: '图文叠加',
-        mods: [ModMixLayer]
-      },
-      {
-        id: '1-5',
-        label: '图文拼接',
-        mods: [ModMixPositon]
-      },
-      {
-        id: '1-6',
-        label: '菜单',
+        id: '2-1',
+        label: 'modList.menu',
         mods: [ModMenu]
       },
       {
-        id: '1-7',
-        label: '标题',
+        id: '2-2',
+        label: 'modList.headNavigation',
         mods: [ModTitle]
       }
     ]
   },
   {
-    id: '2',
-    label: '图形',
-    children: [
-      {
-        id: '2-1',
-        label: '图文轮播',
-        mods: [ModImgLoop]
-      },
-      {
-        id: '2-2',
-        label: '图像宽屏',
-        mods: [ModImg]
-      }
-    ]
-  },
-  {
-    id: '3',
-    label: '文本',
+    id: 3,
+    label: 'modList.graphic',
     children: [
       {
         id: '3-1',
-        label: '文本',
-        mods: [ModText]
-      }
-    ]
-  },
-  {
-    id: '4',
-    label: '交互',
-    children: [
-      {
-        id: '4-1',
-        label: '调用QQ聊天',
-        mods: [ModQQ]
-      }
-    ]
-  },
-  {
-    id: '5',
-    label: '混合搭配',
-    children: [
-      {
-        id: '5-1',
-        label: '标题',
-        mods: [ModTitle, ModText]
-      },
-      {
-        id: '5-2',
-        label: '图文叠加',
-        mods: [ModMixLayer]
-      },
-      {
-        id: '5-3',
-        label: '图文拼接',
-        mods: [ModMixPositon]
-      },
-      {
-        id: '5-4',
-        label: 'Paracraft作品',
-        mods: [ModParacraft]
-      }
-    ]
-  },
-  {
-    id: '6',
-    label: '作品',
-    children: [
-      {
-        id: '6-1',
-        label: 'Paracraft作品',
-        mods: [ModParacraft]
-      }
-    ]
-  },
-  {
-    id: '7',
-    label: '特殊表现',
-    children: [
-      {
-        id: '7-1',
-        label: '图文轮播',
+        label: 'modList.carousel',
         mods: [ModImgLoop]
       },
       {
-        id: '7-2',
-        label: '绘图板',
+        id: '3-2',
+        label: 'modList.widescreenImage',
+        mods: [ModImg]
+      },
+      {
+        id: '3-3',
+        label: 'modList.board',
         mods: [ModBoard]
-      },
-      {
-        id: '7-3',
-        label: 'VIP阅读',
-        mods: [ModVipRead]
-      },
-      {
-        id: '7-4',
-        label: '评论',
-        mods: [ModComment]
       }
     ]
   },
   {
-    id: '8',
-    label: '设置',
+    id: 4,
+    label: 'modList.text',
     children: [
       {
-        id: '8-1',
-        label: '调用QQ聊天',
+        id: '4-1',
+        label: 'modList.markdown',
+        mods: [ModMarkdown]
+      },
+      // {
+      //   id: '4-2',
+      //   label: 'modList.toc',
+      //   mods: [ModToc]
+      // },
+      {
+        id: '4-2',
+        label: 'modList.text',
+        mods: [ModText]
+      },
+      {
+        id: '4-3',
+        label: 'modList.menu',
+        mods: [ModMenu]
+      }
+      // {
+      //   id: '4-5',
+      //   label: 'modList.pageList',
+      //   mods: [ModPageList]
+      // }
+    ]
+  },
+  {
+    id: 5,
+    label: 'modList.interative',
+    children: [
+      {
+        id: '5-1',
+        label: 'modList.comment',
+        mods: [ModComment]
+      },
+      // {
+      //   id: '5-2',
+      //   label: 'modList.pageList',
+      //   mods: [ModPageList]
+      // },
+      {
+        id: '5-2',
+        label: 'modList.qq',
         mods: [ModQQ]
+      }
+    ]
+  },
+  {
+    id: 6,
+    label: 'modList.mixAndMatch',
+    children: [
+      {
+        id: '6-1',
+        label: 'modList.headNavigation',
+        mods: [ModTitle]
+      },
+      {
+        id: '6-2',
+        label: 'modList.text',
+        mods: [ModText]
+      },
+      {
+        id: '6-3',
+        label: 'modList.mixPosition',
+        mods: [ModMixPositon]
+      },
+      {
+        id: '6-4',
+        label: 'modList.mixLayer',
+        mods: [ModMixLayer]
+      },
+      {
+        id: '6-5',
+        label: 'modList.paracraft',
+        mods: [ModParacraft]
+      },
+      {
+        id: '6-6',
+        label: 'modList.textBoard',
+        mods: [ModTextBoard]
+      }
+    ]
+  },
+  {
+    id: 7,
+    label: 'modList.other',
+    children: [
+      {
+        id: '7-1',
+        label: 'modList.paracraft',
+        mods: [ModParacraft]
+      },
+      {
+        id: '7-2',
+        label: 'modList.vipRead',
+        mods: [ModVipRead]
       }
     ]
   }

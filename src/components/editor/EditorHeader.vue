@@ -6,31 +6,31 @@
           <img class='kp-logo' src='@/assets/img/logo.svg' alt='Menu'>
         </template>
         <el-submenu index='1-1'>
-          <template slot='title'>系统</template>
-          <el-menu-item index='1-1-1' @click="openNewWebsiteDialog">新建网站</el-menu-item>
-          <el-menu-item index='1-1-2' :disabled='isActivePageSaved' @click='save'>保存</el-menu-item>
+          <template slot='title'>{{$t('editor.system')}}</template>
+          <el-menu-item index='1-1-1' @click="openNewWebsiteDialog">{{$t('editor.newWebsite')}}</el-menu-item>
+          <el-menu-item index='1-1-2' :disabled='isActivePageSaved' @click='save'>{{$t('editor.save')}}</el-menu-item>
           <el-menu-item index='1-1-3'>
-            <a href="/wiki/user_center?userCenterContentType=websiteManager" target="_blank">网站设置</a>
+            <a href="/wiki/user_center?userCenterContentType=websiteManager" target="_blank">{{$t('editor.siteSettings')}}</a>
           </el-menu-item>
           <!-- <el-menu-item index='1-1-4'>网站备份</el-menu-item>
           <el-menu-item index='1-1-5'>版本管理</el-menu-item> -->
         </el-submenu>
         <el-submenu index='1-2'>
-          <template slot='title'>页面</template>
+          <template slot='title'>{{$t('editor.page')}}</template>
           <el-menu-item index='1-2-1'>
-            <a href="/wiki/user_center?userCenterContentType=userProfile&userCenterSubContentType=dataSource" target="_blank">数据源</a>
+            <a href="/wiki/user_center?userCenterContentType=userProfile&userCenterSubContentType=dataSource" target="_blank">{{$t('editor.dataSource')}}</a>
           </el-menu-item>
         </el-submenu>
         <el-submenu index='1-3'>
-          <template slot='title'>编辑</template>
-          <el-menu-item index='1-3-1' @click='undo' :disabled='!canUndo'>撤销</el-menu-item>
-          <el-menu-item index='1-3-2' @click='redo' :disabled='!canRedo'>重做</el-menu-item>
+          <template slot='title'>{{$t('editor.edit')}}</template>
+          <el-menu-item index='1-3-1' @click='undo' :disabled='!canUndo'>{{$t('editor.revoke')}}</el-menu-item>
+          <el-menu-item index='1-3-2' @click='redo' :disabled='!canRedo'>{{$t('editor.redo')}}</el-menu-item>
           <!-- <el-menu-item index='1-3-3'>搜索</el-menu-item>
           <el-menu-item index='1-3-4'>替换</el-menu-item> -->
         </el-submenu>
         <el-submenu index='1-4'>
-          <template slot='title'>插入</template>
-          <el-menu-item index='1-4-1' @click="changeView('ModsList')">模块</el-menu-item>
+          <template slot='title'>{{$t('editor.insert')}}</template>
+          <el-menu-item index='1-4-1' @click="changeView('ModsList')">{{$t('editor.module')}}</el-menu-item>
           <!-- <el-menu-item index='1-4-2'>网盘</el-menu-item> -->
         </el-submenu>
         <!-- <el-submenu index='1-5'>
@@ -46,20 +46,20 @@
           </el-submenu>
         </el-submenu> -->
         <el-menu-item index='1-6'>
-          <a href="/official/help/index" target="_blank">帮助</a>
+          <a href="/official/help/index" target="_blank">{{$t('editor.help')}}</a>
         </el-menu-item>
         <el-menu-item index='1-7'>
-          <a href='/'>返回首页</a>
+          <a href='/'>{{$t('editor.backHomePage')}}</a>
         </el-menu-item>
       </el-submenu>
-      <el-menu-item index='3' class='li-btn' :disabled='isActivePageSaved'>
-        <span v-loading='savePending' class='iconfont icon-baocun' :title='$t("editor.save")' @click='save'></span>
+      <el-menu-item index='3' class='li-btn save-btn' :disabled='isActivePageSaved'>
+        <span v-loading='savePending' class='iconfont icon-save' :title='$t("editor.save")' @click='save'></span>
       </el-menu-item>
       <el-menu-item index='4' class='li-btn' @click='undo' :disabled='!canUndo'>
-        <span class='iconfont icon-fanhui' title='撤销'></span>
+        <span class='iconfont icon-return' :title='$t("editor.revoke")'></span>
       </el-menu-item>
       <el-menu-item index='5' class='li-btn' @click='redo' :disabled='!canRedo'>
-        <span class='iconfont icon-chongzuo' title='重做'></span>
+        <span class='iconfont icon-revocation' :title='$t("editor.redo")'></span>
       </el-menu-item>
       <!-- <el-menu-item index=' 8 ' class='li-btn'>
         <el-dropdown @command='changeViewType '>
@@ -75,10 +75,13 @@
         </el-dropdown>
       </el-menu-item> -->
       <el-menu-item index='2' class="link-box">
-        <i class="iconfont icon-fuzhi1" @click='doCopyLink'></i>
-        <a :href='activePageUrl' target='_blank'>{{nowOrigin + activePageUrl}}</a>
+        <i class="iconfont icon-copy" @click='doCopyLink'></i>
+        <a :href='activePageFullUrl' target='_blank'>{{ activePageFullUrl }}</a>
       </el-menu-item>
-      <el-menu-item index='7 ' class='pull-right user-profile-box'>
+      <el-menu-item index='8' class='unsaved-tip'>
+        <span>{{ isActivePageSaved ? '' : $t('editor.unsavedTip') }}</span>
+      </el-menu-item>
+      <el-menu-item index='7' class='pull-right user-profile-box'>
         <img class='user-profile' :src='userProfile.portrait' alt=''>
       </el-menu-item>
     </el-menu>
@@ -106,15 +109,25 @@ export default {
       this.save()
       return false
     })
+    Mousetrap.unbind('mod+z')
+    Mousetrap.bind('mod+z', () => {
+      this.undo()
+      return false
+    })
+    Mousetrap.unbind('mod+y')
+    Mousetrap.bind('mod+y', () => {
+      this.redo()
+      return false
+    })
   },
   computed: {
     ...mapGetters({
       showingCol: 'showingCol',
-      activePageUrl: 'activePageUrl',
+      activePageInfo: 'activePageInfo',
       canUndo: 'canUndo',
       canRedo: 'canRedo',
       openedFiles: 'openedFiles',
-      activePageInfo: 'activePageInfo',
+      activeAreaData: 'activeAreaData',
       openedFiles: 'openedFiles',
       userProfile: 'user/profile'
     }),
@@ -138,35 +151,44 @@ export default {
         return this.$t('editor.splitScreen')
       }
     },
+    activePageFullUrl() {
+      let { fullPath = '' } = this.activePageInfo
+      let url = `${this.nowOrigin}/${fullPath}`
+      return (url || '').replace(/\.md$/,'')
+    },
     isActivePageSaved() {
-      let { saved } = this.activePageInfo
-      return saved
+      let { saved } = this.activeAreaData || {}
+      return saved === false ? false : true
     }
   },
   methods: {
-    ...mapActions(['saveActivePage', 'undo', 'redo', 'setActiveWinType']),
+    ...mapActions(['saveActivePage', 'undo', 'redo', 'setActiveManagePaneComponent']),
     async save() {
+      let self = this
+
       if (this.isActivePageSaved) {
         return
       }
-      this.savePending = true
-      await this.saveActivePage()
-        .then(() => {
-          this.$message({
-            showClose: true,
-            message: '文件保存成功',
-            type: 'success'
+      if(!this.savePending) {
+        this.savePending = true
+        await this.saveActivePage()
+          .then(() => {
+            this.$message({
+              showClose: true,
+              message: self.$t('editor.saveSuccess'),
+              type: 'success'
+            })
           })
-        })
-        .catch(e => {
-          console.log(e)
-          this.$message({
-            showClose: true,
-            message: '文件保存失败',
-            type: 'error'
+          .catch(e => {
+            console.log(e)
+            this.$message({
+              showClose: true,
+              message: self.$t('editor.saveFail'),
+              type: 'error'
+            })
           })
-        })
-      this.savePending = false
+        this.savePending = false
+      }
     },
     openNewWebsiteDialog() {
       this.isNewWebsiteDialogShow = true
@@ -176,12 +198,12 @@ export default {
     },
     doCopyLink() {
       let that = this
-      let toCopyLink = this.nowOrigin + this.activePageUrl
+      let toCopyLink = this.activePageFullUrl
       this.$copyText(toCopyLink).then(
         function(e) {
           that.$message({
             showClose: true,
-            message: '链接复制成功',
+            message: that.$t('editor.copySuccess'),
             type: 'success'
           })
         },
@@ -189,14 +211,14 @@ export default {
           console.log(e)
           that.$message({
             showClose: true,
-            message: '链接复制失败',
+            message: that.$t('editor.copyFail'),
             type: 'error'
           })
         }
       )
     },
     changeView(type) {
-      this.setActiveWinType(type)
+      this.setActiveManagePaneComponent(type)
     }
   },
   components: {
@@ -209,6 +231,22 @@ export default {
 .el-menu-item.is-active {
   border-bottom: none;
 }
+.unsaved-tip {
+  display: inline-flex;
+  align-items: center;
+}
+.unsaved-tip span {
+  line-height: 1.7em;
+  position: relative;
+  top: .3em;
+  border-bottom: 2px solid #F7BC2A !important;
+}
+.save-btn:not(.is-disabled) .icon-save {
+  background: #F7BC2A;
+  border-color: #F7BC2A;
+  color: white;
+}
+
 .kp-logo {
   width: 127px;
 }

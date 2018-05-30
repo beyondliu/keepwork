@@ -18,17 +18,43 @@ const renderTemplate = (h, m, data, parentIndex) => {
   return _.map(data, menuData => {
     index++
 
+    if (!parentIndex) {
+      parentIndex = index
+    }
+
     if (!menuData.child) {
       return (
-        <el-menu-item index={getIndexString(index)} style={m.options.itemStyle}>
-          <a target={m.properties.target ? m.properties.target : m.options.emptyTarget} href={menuData.link}>{m.isEmptyData ? m.$t(menuData.name) : menuData.name}</a>
+        <el-menu-item
+          index={getIndexString(index)}
+          style={parentIndex == 1 && m.itemStyle}
+        >
+          <a
+            target={
+              m.properties.target ? m.properties.target : m.options.emptyTarget
+            }
+            href={menuData.link}
+          >
+            {m.isEmptyData ? m.$t(menuData.name) : menuData.name}
+          </a>
         </el-menu-item>
       )
     } else {
       return (
-        <el-submenu index={getIndexString(index)} style={m.options.itemStyle}>
+        <el-submenu
+          index={getIndexString(index)}
+          style={parentIndex == 1 && m.itemStyle}
+        >
           <template slot="title">
-            <a target={m.properties.target ? m.properties.target : m.options.emptyTarget} href={menuData.link}>{m.isEmptyData ? m.$t(menuData.name) : menuData.name}</a>
+            <a
+              target={
+                m.properties.target
+                  ? m.properties.target
+                  : m.options.emptyTarget
+              }
+              href={menuData.link}
+            >
+              {m.isEmptyData ? m.$t(menuData.name) : menuData.name}
+            </a>
           </template>
           {renderTemplate(h, m, menuData.child, getIndexString(index))}
         </el-submenu>
@@ -47,6 +73,7 @@ export default {
           background-color={this.options.menuBackground}
           text-color={this.options.fontColor}
           active-text-color={this.options.fontColor}
+          style={this.menuStyle}
         >
           {renderTemplate(h, this)}
         </el-menu>
@@ -55,11 +82,17 @@ export default {
   },
   mixins: [compBaseMixin],
   computed: {
+    menuStyle() {
+      return this.generateStyleString(this.options.menuStyle)
+    },
+    itemStyle() {
+      return this.generateStyleString(this.options.itemStyle)
+    },
     mode() {
       return this.options.mode
     },
     data() {
-      return this.properties.data.length != 0 ? this.properties.data : this.options.emptyData
+      return this.properties.data
     },
     isEmptyData() {
       return this.properties.data.length != 0 ? false : true

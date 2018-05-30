@@ -3,8 +3,11 @@ import Cookies from 'js-cookie'
 import {
   gitTree2NestedArray,
   getFileFullPathByPath,
-  EMPTY_GIT_FOLDER_KEEPER
+  getFileSitePathByPath,
+  EMPTY_GIT_FOLDER_KEEPER,
+  CONFIG_FOLDER_NAME
 } from '@/lib/utils/gitlab'
+import LayoutHelper from '@/lib/mod/layout'
 
 const getters = {
   info: state => state.info,
@@ -25,34 +28,37 @@ const getters = {
   defaultSiteDataSource: (state, { profile: { defaultSiteDataSource } }) =>
     defaultSiteDataSource,
   gitlabConfig: (state, { defaultSiteDataSource }) => ({
-    url: _.get(defaultSiteDataSource, 'rawBaseUrl'),
+    url: process.env.GITLAB_API_PREFIX, // _.get(defaultSiteDataSource, 'rawBaseUrl'),
     token: _.get(defaultSiteDataSource, 'dataSourceToken')
   }),
 
   siteDataSourcesMap: (state, {username}) => _.get(state, ['siteDataSource', username]),
   getPersonalSiteListByUsername: (
     state,
-    { siteDataSourcesMap },
+    { siteDataSourcesMap, defaultSiteDataSource },
     rootState,
     rootGetters
   ) => username => {
     let { 'gitlab/repositoryTrees': repositoryTrees } = rootGetters
     let websitesMap = _.get(state, ['website', username])
+    let { projectId: defaultProjectId, lastCommitId: defaultLastCommitId } = defaultSiteDataSource
 
     // use websitesMap to generate personal website list
     let websiteNames = _.keys(websitesMap)
 
     let personalSiteList = websiteNames.map(name => {
       // use siteDataSourcesMap to get projectId and lastCommitId
-      let projectId = _.get(siteDataSourcesMap, [name, 'projectId'])
-      let lastCommitId = _.get(siteDataSourcesMap, [name, 'lastCommitId'])
+      let projectId = _.get(siteDataSourcesMap, [name, 'projectId'], defaultProjectId)
+      let lastCommitId = _.get(siteDataSourcesMap, [name, 'lastCommitId'], defaultLastCommitId)
 
       // use repositoryTrees to get the nested files list in certain personal site
       let rootPath = `${username}/${name}`
       let files = _.get(repositoryTrees, [projectId, rootPath], []).filter(
         ({ name }) => name !== EMPTY_GIT_FOLDER_KEEPER
       )
-      let children = gitTree2NestedArray(files, rootPath)
+      let children = gitTree2NestedArray(files, rootPath).filter(
+        ({ name }) => name !== CONFIG_FOLDER_NAME
+      )
 
       return {
         ...websitesMap[name],
@@ -97,7 +103,9 @@ const getters = {
       let files = _.get(repositoryTrees, [projectId, rootPath], []).filter(
         ({ name }) => name !== EMPTY_GIT_FOLDER_KEEPER
       )
-      let children = gitTree2NestedArray(files, rootPath)
+      let children = gitTree2NestedArray(files, rootPath).filter(
+        ({ name }) => name !== CONFIG_FOLDER_NAME
+      )
       return {
         ...contributedWebsitesMapByRootpath[rootPath],
         projectId,
@@ -136,14 +144,26 @@ const getters = {
   ) => path => {
     let [username, sitename] = path.split('/').filter(x => x)
     let {
-      userinfo: { dataSource: dataSourceList = [] }
+      userinfo: { dataSource: dataSourceList = [], defaultDataSourceSitename }
     } = getSiteDetailInfoByPath(path)
-    let targetDataSource = dataSourceList.filter(dataSource => {
-      return (
-        dataSource.username === username && dataSource.sitename === sitename
-      )
-    })[0]
-    return targetDataSource
+    let defaultDataSource = dataSourceList.filter(dataSource => dataSource.sitename === defaultDataSourceSitename)[0]
+    let targetDataSource = dataSourceList.filter(
+      dataSource => dataSource.username === username && dataSource.sitename === sitename
+    )[0] || defaultDataSource
+    return {
+      ...targetDataSource,
+      rawBaseUrl: process.env.GITLAB_API_PREFIX
+    }
+  },
+
+  getGitFileProjectIdAndRefByPath: (state, { personalAndContributedSitePathMap, defaultSiteDataSource }) => path => {
+    let [username, sitename] = path.split('/').filter(x => x)
+    let { projectId, lastCommitId: ref = 'master' } = _.get(
+      personalAndContributedSitePathMap,
+      `${username}/${sitename}`,
+      defaultSiteDataSource
+    )
+    return { projectId, ref }
   },
 
   comments: state => state.comments,
@@ -167,26 +187,59 @@ const getters = {
   },
 
   webTemplateConfig: state => state.webTemplateConfig,
-  getWebTemplates: (state, { webTemplateConfig = [] }) => classify => {
-    let categoriesMap = _.keyBy(webTemplateConfig, 'classify')
-    return _.get(categoriesMap, [classify, 'templates'], [])
+  getWebTemplates: (state, { webTemplateConfig = [] }) => categoryName => {
+    let categoriesMap = _.keyBy(webTemplateConfig, 'name')
+    return _.get(categoriesMap, [categoryName, 'templates'], [])
   },
   getWebTemplate: (state, { getWebTemplates }) => ({
-    classify,
+    categoryName,
     templateName
   }) => {
-    let templatesInClassify = getWebTemplates(classify)
-    return _.get(_.keyBy(templatesInClassify, 'name'), [templateName], {})
+    let templatesInCategory = getWebTemplates(categoryName)
+    return _.get(_.keyBy(templatesInCategory, 'name'), [templateName], {})
   },
-  getWebTemplateStyle: (state, { getWebTemplate }) => ({
-    classify,
-    templateName,
-    styleName
-  }) => {
-    let { styles = [] } = getWebTemplate({ classify, templateName })
-    return styles[0] // _.keyBy(styles, 'name')[styleName]
+
+  activePageStarInfo: state => state.activePageStarInfo,
+
+  siteLayoutConfigs: state => state.siteLayoutConfigs,
+  siteLayoutConfigBySitePath: (state, { siteLayoutConfigs }) => sitePath => siteLayoutConfigs[sitePath] || {},
+  siteLayoutsBySitePath: (state, { siteLayoutConfigBySitePath }) => sitePath => {
+    let siteLayoutConfig = siteLayoutConfigBySitePath(sitePath)
+    let allLayouts = _.get(siteLayoutConfig, ['layoutConfig', 'layouts'], [])
+    return allLayouts
   },
-  activePageStarInfo: state => state.activePageStarInfo
+  allLayoutContentFilePathsBySitePath: (state, { siteLayoutsBySitePath }) => sitePath => {
+    let allLayouts = siteLayoutsBySitePath(sitePath)
+    let allLayoutContentFilePaths = _.flatten(allLayouts.map(
+      ({content}) => _.keys(content).filter(
+        key => (content[key] || '').trim()
+      ).map(
+        key => `${key}s/${content[key]}`
+      )
+    ))
+    return allLayoutContentFilePaths
+  },
+  getLayoutByPath: (state, { siteLayoutConfigBySitePath }) => path => {
+    let sitePath = getFileSitePathByPath(path)
+    let siteLayoutConfig = siteLayoutConfigBySitePath(sitePath)
+    let layout = LayoutHelper.getLayoutByPath(siteLayoutConfig, path)
+    return layout
+  },
+  layoutContentFilePathsByPath: (state, { getLayoutByPath }) => path => {
+    let layout = getLayoutByPath(path)
+    let layoutContentFilePaths = _.keys(layout.content).filter(key => layout.content[key]).map(key => `${key}s/${layout.content[key]}`)
+    return layoutContentFilePaths
+  },
+  getSettedPageLayoutByPath: (state, { siteLayoutConfigBySitePath }) => path => {
+    let sitePath = getFileSitePathByPath(path)
+    let siteLayoutConfig = siteLayoutConfigBySitePath(sitePath)
+    let layout = LayoutHelper.getSettedPageLayoutByPath(siteLayoutConfig, path)
+    return layout
+  },
+
+  skyDrive: (state, { username }) => _.get(state.skyDrive, username, {}),
+  skyDriveFileList: (state, { skyDrive: { filelist = [] } }) => filelist,
+  skyDriveInfo: (state, { skyDrive: { info = {} } }) => info
 }
 
 export default getters

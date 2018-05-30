@@ -3,33 +3,38 @@
     <el-col id="managerWin" class="manager-win">
       <el-row class="toolbar">
         <el-button-group>
-          <el-button class="iconfont icon-mulu" :class='{"el-button--primary": activeComponent=="FileManager"}' @click="changeView('FileManager')"></el-button>
-          <!-- <el-button class="btn-bigfile" :class='{"el-button--primary": activeComponent=="ModPropertyManager"}' @click="changeView('ModPropertyManager')"></el-button> -->
-          <el-button class="iconfont icon-tianjiamokuai" :class='{"el-button--primary": activeComponent=="ModsList"}' @click="changeView('ModsList')"></el-button>
-          <!-- <el-button class="btn-search" :class='{"el-button--primary": activeComponent=="Search"}' @click="changeView('Search')"></el-button> -->
+          <el-button class="iconfont icon-list_directory" :class='{"el-button--primary": activeManagePaneComponentName=="FileManager"}' @click="changeView('FileManager')"></el-button>
+          <!-- <el-button class="btn-bigfile" :class='{"el-button--primary": activeManagePaneComponentName=="ModPropertyManager"}' @click="changeView('ModPropertyManager')"></el-button> -->
+          <el-button v-if='activePage' class="iconfont icon-module" :class='{"el-button--primary": activeManagePaneComponentName=="ModsList"}' @click="changeView('ModsList')"></el-button>
+          <el-button v-if='activePage' class='iconfont icon-upload' @click="openSkyDriveManagerDialog"></el-button>
+          <!-- <el-button class="btn-search" :class='{"el-button--primary": activeManagePaneComponentName=="Search"}' @click="changeView('Search')"></el-button> -->
         </el-button-group>
+        <SkyDriveManagerDialog :show='isSkyDriveManagerDialogShow' @close='closeSkyDriveManagerDialog' />
       </el-row>
       <el-row class="manager-content-box">
-        <component :is='activeComponent'></component>
+        <keep-alive>
+          <component :is='activeManagePaneComponentName' v-bind='activeManagePaneComponentProps'></component>
+        </keep-alive>
       </el-row>
     </el-col>
     <div class="col-between"></div>
     <el-col id="previewWin" v-show="showingCol.isPreviewShow == true && !isWelcomeShow" :style='{ width: previewWinWidth + "%" }' class="preview-win">
       <el-row class="toolbar">
-        <el-button-group>
-          <el-button class="iconfont icon-diannaomoshi" title="电脑"></el-button>
-          <el-button class="iconfont icon-shoujimoshi" title="手机"></el-button>
-        </el-button-group>
+        <!-- <el-button-group>
+          <el-button class="iconfont icon-computer" title="电脑"></el-button>
+          <el-button class="iconfont icon-phone" title="手机"></el-button>
+        </el-button-group> -->
         <!-- <el-button-group>
           <el-button class="btn-scale" title="缩小"></el-button>
           <el-button class="btn-enlarge" title="放大"></el-button>
         </el-button-group> -->
         <el-button-group>
           <!-- <el-button class="btn-adaptive" title="自适应"></el-button> -->
-          <el-button class="iconfont icon-xinchuangkouyulan" title="新窗口打开" @click='showPreview'></el-button>
+          <!-- <el-button class="iconfont icon-new_open_window" title="新窗口打开" @click='showPreview'></el-button> -->
+          <el-button class="iconfont icon-new_open_window" :title="$t('editor.newWindowOpen')" @click='showPage'></el-button>
         </el-button-group>
         <div class="code-win-swich">
-          <span>显示代码</span>
+          <span>{{$t('editor.showCode')}}</span>
           <el-switch v-model="isCodeWinShow" @change='toggleCodeWin'>
           </el-switch>
         </div>
@@ -42,25 +47,26 @@
     <el-col id="codeWin" v-if="!isWelcomeShow && showingCol.isCodeShow == true" :style='{ width: codeWinWidth + "%" }' class="code-win">
       <el-row class="toolbar">
         <el-button-group>
-          <el-button :title='isFullscreen ? "退出全屏" : "全屏"' :icon="fullscreenIcon" circle @click="toggleFullscreen"></el-button>
+          <el-button :title='isFullscreen ? $t("editor.exitFullScreen") : $t("editor.fullScreen")' :icon="fullscreenIcon" circle @click="toggleFullscreen"></el-button>
         </el-button-group>
         <el-button-group>
-          <el-button class="iconfont icon-H" title="标题1" @click="insertHeadline(1)"></el-button>
-          <el-button class="iconfont icon-h1" title="标题2" @click="insertHeadline(2)"></el-button>
-          <el-button class="iconfont icon-zihyuan" title="标题3" @click="insertHeadline(3)"></el-button>
-          <el-button class="iconfont icon-jiacu" title="加粗" @click="setFontStyle('bold')"></el-button>
-          <el-button class="iconfont icon-qingxie" title="斜体" @click="setFontStyle('italic')"></el-button>
+          <el-button class="iconfont icon-h1" :title="$t('editor.title') + '1'" @click="insertHeadline(1)"></el-button>
+          <el-button class="iconfont icon-h2" :title="$t('editor.title') + '2'" @click="insertHeadline(2)"></el-button>
+          <el-button class="iconfont icon-h3" :title="$t('editor.title') + '3'" @click="insertHeadline(3)"></el-button>
+          <el-button class="iconfont icon-thickening" :title="$t('editor.bold')" @click="setFontStyle('bold')"></el-button>
+          <el-button class="iconfont icon-incline" :title="$t('editor.italic')" @click="setFontStyle('italic')"></el-button>
         </el-button-group>
         <el-button-group>
-          <!-- <el-button class="iconfont icon-xuliebiao" title="无序列表"></el-button>
-          <el-button class="iconfont icon-xulie" title="有序列表"></el-button>
-          <el-button class="iconfont icon-yinyong" title="引用内容"></el-button> -->
-          <!-- <el-button class="iconfont icon-biaoge" title="表格"></el-button> -->
-          <el-button class="iconfont icon-ziyuanfengexian" title="水平分割线" @click="insertLine"></el-button>
+          <!-- <el-button class="iconfont icon-sequence_1" title="无序列表"></el-button>
+          <el-button class="iconfont icon-sequence_" title="有序列表"></el-button>
+          <el-button class="iconfont icon-reference" title="引用内容"></el-button> -->
+          <!-- <el-button class="iconfont icon-table" title="表格"></el-button> -->
+          <el-button class="iconfont icon-code_division_line" :title="$t('editor.horizontalDiv')" @click="insertLine"></el-button>
+          <el-button class="iconfont icon-code" :title="$t('editor.code')" @click="insertCode"></el-button>
+          <el-button class="iconfont icon-link_" :title="$t('editor.link')" @click="insertLink"></el-button>
         </el-button-group>
         <el-button-group>
-          <el-button class="iconfont icon-daima" title="代码" @click="insertCode"></el-button>
-          <el-button class="iconfont icon-fenxianglianjie" title="链接" @click="insertLink"></el-button>
+          <el-button class="iconfont icon-module" title="MOD" @click="addModToMarkdown"></el-button>
         </el-button-group>
       </el-row>
       <editor-markdown ref='codemirror' />
@@ -73,14 +79,16 @@
 
 <script>
 import _ from 'lodash'
+import { gConst } from '@/lib/global'
 import fullscreen from 'vue-fullscreen'
 import EditorMarkdown from './EditorMarkdown'
 import EditorWelcome from './EditorWelcome'
-// import EditorViewport from './EditorViewport'
 import ModPropertyManager from './ModPropertyManager'
 import FileManager from './FileManager'
 import ModsList from './ModsList'
 import Search from './Search'
+import PageSetting from './PageSetting'
+import SkyDriveManagerDialog from '@/components/common/SkyDriveManagerDialog'
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
@@ -98,7 +106,9 @@ export default {
         rightColWidthParam: ''
       },
       isCodeWinShow: true,
-      isFullscreen: false
+      isFullscreen: false,
+      isSkyDriveManagerDialogShow: false,
+      gConst
     }
   },
   created() {
@@ -116,16 +126,20 @@ export default {
   components: {
     EditorMarkdown,
     EditorWelcome,
-    // EditorViewport,
     ModPropertyManager,
     Search,
     ModsList,
-    FileManager
+    FileManager,
+    PageSetting,
+    SkyDriveManagerDialog
   },
   computed: {
     ...mapGetters({
+      activePage: 'activePage',
+      activePageUrl: 'activePageUrl',
       personalSiteList: 'user/personalSiteList',
-      activeComponent: 'activeComponentType',
+      activeManagePaneComponentName: 'activeManagePaneComponentName',
+      activeManagePaneComponentProps: 'activeManagePaneComponentProps',
       showingCol: 'showingCol',
       activePageInfo: 'activePageInfo'
     }),
@@ -134,8 +148,8 @@ export default {
     },
     fullscreenIcon() {
       return this.isFullscreen
-        ? 'iconfont icon-tuichuquanping'
-        : 'iconfont icon-quanping1'
+        ? 'iconfont icon-full_screen_exit'
+        : 'iconfont icon-full-screen_'
     }
   },
   watch: {
@@ -198,13 +212,16 @@ export default {
       resetShowingCol: 'resetShowingCol'
     }),
     changeView(type) {
-      this.$store.dispatch('setActiveWinType', type)
+      this.$store.dispatch('setActiveManagePaneComponent', type)
     },
     toggleCodeWin(isCodeWinShow) {
       if (isCodeWinShow) {
         this.resetShowingCol({
           isCodeShow: true,
           isPreviewShow: true
+        })
+        this.$store.dispatch('setAddingArea', {
+          area: this.gConst.ADDING_AREA_ADI
         })
       } else {
         this.resetShowingCol({
@@ -245,8 +262,11 @@ export default {
       this[leftColName] = this[leftColName] + diffPercent
       this[rightColName] -= diffPercent
     },
-    showPreview() {
-      this.$emit('showPreview')
+    // showPreview() {
+    //   this.$emit('showPreview')
+    // },
+    showPage() {
+      window.open(this.activePageUrl)
     },
     dragMouseUp() {
       this.resizeWinParams.isResizing = false
@@ -269,7 +289,16 @@ export default {
       this.$refs.codemirror.insertLink()
     },
     insertImage() {
-      this.$refs.codemirror.insertImage()
+      this.$refs.codemirror.insertFile()
+    },
+    addModToMarkdown() {
+      this.$refs.codemirror.addMod()
+    },
+    openSkyDriveManagerDialog() {
+      this.isSkyDriveManagerDialogShow = true
+    },
+    closeSkyDriveManagerDialog() {
+      this.isSkyDriveManagerDialogShow = false
     }
   }
 }
@@ -395,7 +424,7 @@ export default {
 .code-win-fullscreen {
   width: 100% !important;
   height: 100%;
-  background-color:#cdd4dc;
+  background-color: #cdd4dc;
   max-width: 1080px;
 }
 </style>

@@ -1,18 +1,84 @@
 {
   "common": {
     "welcomeToKeepwork": "欢迎来到 Keepwork",
-    "createNewWebsite": "创建新网站"
+    "createNewWebsite": "创建新网站",
+
+    "features": "功能",
+    "applicationCenter": "应用中心",
+    "myHomePage": "我的主页",
+    "websiteManagement": "网站管理",
+    "pageEditor": "页面编辑器",
+    "myWebDisk": "我的网盘",
+    "dynamic": "动态",
+    "attention": "关注",
+    "history": "历史",
+    "help": "帮助",
+    "iicc": "国际智能创意大赛",
+
+    "openPlatform": "开放平台",
+    "joinUs": "加入我们",
+    "websiteStatistics": "网站统计",
+    "updateInformation": "更新信息",
+    "feedback": "问题反馈",
+    "complaintPage": "投诉本页",
+    "poweredByNPL": "由NPL提供支持",
+    "simplifiedChinese": "简体中文",
+
+    "caseNumberA": "粤ICP备14002196号-2",
+    "caseNumberB": "© Tatfook",
+
+    "iShare": "我将",
+    "shareToYouA": "在KEEPWORK.COM制作的网站分享给你",
+    "shareToYouB": "分享给你",
+    "maded": "制作的",
+    "websiteB": "网站",
+    "QR": "扫描二维码打开网页",
+    "error": "出错啦，请重试"
   },
   "editor": {
     "save": "保存",
+    "saveSuccess": "文件保存成功",
+    "saveFail": "文件保存失败",
+    "unsavedTip": "编辑内容未保存",
+    "copySuccess": "链接复制成功",
+    "copyFail": "链接复制失败",
 
     "preview": "预览",
     "code": "代码",
     "splitScreen": "分屏",
 
+    "system": "系统",
+    "page": "页面",
+    "edit": "编辑",
+    "insert": "插入",
+    "help": "帮助",
+    "backHomePage": "返回首页",
+    "newWebsite": "新建网站",
+    "siteSettings": "网站设置",
+    "dataSource": "数据源",
+    "revoke": "撤销",
+    "redo": "重做",
+    "module": "模块",
+
     "refresh": "刷新",
     "close": "关闭",
     "delete": "删除",
+    "delConfirm": "确定删除",
+    "nameSingle": "名",
+    "name": "名称",
+    "link": "链接",
+    "setting": "设置",
+    "create": "创建",
+
+    "folder": "文件夹",
+    "newPage": "新建页面",
+    "newFolder": "新建文件夹",
+    "website": "网页",
+
+    "emptyName": "名不能为空",
+    "nameRule": "名只能由字母，数字和下划线组成",
+    "nameUnderline": "名不能由下划线开头",
+    "nameExist": "同名文件已经存在",
 
     "openedFiles": "已打开",
     "myPersonalWebsites": "我创建的网站",
@@ -20,7 +86,119 @@
     "myContributedWebsitesTip": "获得他人网站的编辑权限后，将会在这里显示",
 
     "noPersonalWebsite": "还没有创建网站",
-    "createWebsiteNow": "现在创建"
+    "createWebsiteNow": "现在创建",
+
+    "addMod": "请点击添加模块",
+    "showCode": "显示代码",
+
+    "modAttr": "属性",
+    "modStyle": "样式",
+    "modDel": "删除模块",
+    "modDelMsg": "确定删除这个模块？",
+    "modDelMsgTitle": "删除提示",
+
+    "select": "请选择",
+    "selfWindowOpen": "本窗口打开",
+    "newWindowOpen": "新窗口打开",
+    "openMenuEditor": "打开菜单编辑器",
+    "openGalleryEditor": "打开图片编辑器",
+    "menuEditor": "菜单编辑器",
+    "galleryEditor": "图片编辑器",
+    "imgSrc": "图片地址",
+    "insertAfter": "后面添加",
+    "insertBefore": "前面添加",
+    "insertChild": "添加子项",
+    "noData": "暂无数据，请添加",
+    "delNotice": "删除提醒",
+    "menuDelMsg": "确定删除这个节点？子节点也会直接被删除",
+    "menuItem": "菜单项",
+    "fullScreen": "全屏",
+    "exitFullScreen": "退出全屏",
+    "title": "标题",
+    "bold": "加粗",
+    "italic": "斜体",
+    "horizontalDiv": "水平分割线",
+
+    "selectSiteTemplate": "选择网站模板",
+    "setAccessAddress": "设定网站的访问地址",
+    "theNextStep": "下一步",
+    "previous": "上一步",
+    "startEditing": "开始编辑",
+    "unchangeable": "设定后不可修改",
+    "vipForwarding": "VIP可在网站设置中设置cname转发",
+    "URL": "网址:",
+    "canNotBeEmpty": "不能为空",
+    "alreadyExists": "同名网站已经存在",
+    "defaultStyle": "默认样式",
+    "forExample": "例如：mysite123",
+
+    "websiteNameCanOnly": "网站名只能由字母，数字和下划线组成",
+    "setWebsiteName": "您还可以在 网站设置 页面设置网站名称",
+    "privatePermissions": "开启VIP ，额外支持私有权限以及权限管理等特权",
+    "createdSuccessfully": "恭喜您，网站创建成功",
+    "lowerCaseLetters": "可使用小写字母、数字（例如：mysite123）",
+    "cannotBeginWithAnUnderscore": "网站名不能以下划线开头",
+
+    "openRegularExpressionEditor": "编辑器",
+    "matchingRule": "匹配规则：",
+    "pageListLogic": "页面列表逻辑",
+    "supportWildcard": "支持通配符: * (代表多个字符) , ? (代表一个字符)",
+    "supportBooleanCalculation": "支持逻辑运算: || (or)、&& (and)、! (not)",
+    "layoutPlan": "1. 布局方案",
+    "addLayout": "添加方案",
+    "default": "默认",
+    "rename": "重命名",
+
+    "layoutStyle": "2. 布局风格",
+    "header": "页头",
+    "sidebar": "侧边栏",
+    "footer": "页脚",
+    "aside": "侧边栏",
+    "main": "主内容",
+
+    "layoutParameters": "3. 布局参数",
+    "match": "匹配",
+    "cancel": "取消",
+    "keepOneLayout": "至少保留一个布局",
+
+    "deleteFolder": "删除文件夹及其中的所有内容么?",
+    "documents": "个文件吗？",
+    "areYouSureYouWantToDeleteThisFolder": "确定要删除该文件夹？",
+    "videoNotSupport": "您的浏览器不支持 video 标签。",
+    "notFound": "内容找不到了"
+  },
+  "modList": {
+    "recent": "常用",
+    "markdown": "文本(Md)",
+    "bigFile": "大文件",
+
+    "text": "文本",
+    "navigation": "导航",
+    "menu": "导航菜单",
+    "headNavigation": "头部导航",
+
+    "graphic": "图形",
+    "carousel": "图片轮播",
+    "widescreenImage": "宽屏图像",
+    "board": "绘图板",
+
+    "mixLayer": "图文叠加",
+    "mixPosition": "图文拼接",
+    "interative": "交互",
+    "qq": "调用QQ聊天",
+    "mixAndMatch": "混合搭配",
+    "paracraft": "Paracraft作品",
+    "works": "作品",
+    "specialPerformance": "特殊表现",
+
+    "vipRead": "VIP阅读权限",
+    "comment": "评论留言",
+    "setting": "设置",
+    "pageList": "页面列表",
+    "textBoard": "文本与绘图板",
+    "toc": "Markdown 目录",
+
+    "other": "其他"
   },
   "adi": {
     "markdown": {
@@ -36,21 +214,33 @@
     },
     "text": {
       "title": "卢布尔雅那",
-      "paragraph": "一个人去旅行，而且是去故乡的山水间徜徉。临行之前，面对太多的疑问和不解：为何是一个人？也有善意的提醒：何不去远方！昆明呀——赶一个花海；三亚呀——赴一个蓝天碧海。只是微笑地固执自己的坚持，不做任何解释。没有人明白，这一次是一个告别，或者一个永远的告别，以后我会去到很多很繁华或苍凉，辽远或偏僻的地方，而会常常想起这一次的旅行，想起那座山，那个城，那些人……"
+      "paragraph":
+        "一个人去旅行，而且是去故乡的山水间徜徉。临行之前，面对太多的疑问和不解：为何是一个人？也有善意的提醒：何不去远方！昆明呀——赶一个花海；三亚呀——赴一个蓝天碧海。只是微笑地固执自己的坚持，不做任何解释。没有人明白，这一次是一个告别，或者一个永远的告别，以后我会去到很多很繁华或苍凉，辽远或偏僻的地方，而会常常想起这一次的旅行，想起那座山，那个城，那些人……"
     },
     "mixLayer": {
       "title": "加利福尼亚大学",
       "subtitle": "顶尖研究型大学",
-      "paragraph": "加利福尼亚大学伯克利分校是美国最负盛名且是最顶尖的一所公立研究型大学，位于旧金山东湾伯克利市的山丘上。1868年由加利福尼亚学院以及农业、矿业和机械学院合并而成，1873年迁至圣弗朗西斯科（旧金山）附近的伯克利市。伯克利加大是加利福尼亚大学中最老的一所。它也是美国大学协会（Association of American Universities）创始会员之一。其吉祥物蜕变自加州徽号，故其学生亦常自称“金色小熊”。加州大学伯克利分校与斯坦福大学、麻省理工学院等一同被誉为美国工程科技界的学术领袖。"
+      "paragraph":
+        "加利福尼亚大学伯克利分校是美国最负盛名且是最顶尖的一所公立研究型大学，位于旧金山东湾伯克利市的山丘上。1868年由加利福尼亚学院以及农业、矿业和机械学院合并而成，1873年迁至圣弗朗西斯科（旧金山）附近的伯克利市。伯克利加大是加利福尼亚大学中最老的一所。它也是美国大学协会（Association of American Universities）创始会员之一。其吉祥物蜕变自加州徽号，故其学生亦常自称“金色小熊”。加州大学伯克利分校与斯坦福大学、麻省理工学院等一同被誉为美国工程科技界的学术领袖。"
     },
     "mixPosition": {
       "title": "一个人，一条路，人在途中",
       "subtitle": "我们一直在旅行",
-      "paragraph": "一个人去旅行，而且是去故乡的山水间徜徉。临行之前，面对太多的疑问和不解：为何是一个人？也有善意的提醒：何不去远方！昆明呀——赶一个花海；三亚呀——赴一个蓝天碧海。只是微笑地固执自己的坚持，不做任何解释。没有人明白，这一次是一个告别，或者一个永远的告别，以后我会去到很多很繁华或苍凉，辽远或偏僻的地方，而会常常想起这一次的旅行，想起那座山，那个城，那些人……",
+      "paragraph":
+        "一个人去旅行，而且是去故乡的山水间徜徉。临行之前，面对太多的疑问和不解：为何是一个人？也有善意的提醒：何不去远方！昆明呀——赶一个花海；三亚呀——赴一个蓝天碧海。只是微笑地固执自己的坚持，不做任何解释。没有人明白，这一次是一个告别，或者一个永远的告别，以后我会去到很多很繁华或苍凉，辽远或偏僻的地方，而会常常想起这一次的旅行，想起那座山，那个城，那些人……",
       "button": "查看更多"
     },
     "paracraft": {
       "worldName": "默认名字",
+      "paracraftTitle": {
+        "titleA": "心和手",
+        "titleB": "作品介绍",
+        "titleC": "主要功能",
+        "titleD": "相关帮助"
+      },
+      "paracraftSubTitle": {
+        "subtitle": " —— 分享自\"paracraftcreative空间\""
+      },
       "author": {
         "desc": "作者:",
         "text": "你的名字"
@@ -71,7 +261,8 @@
         "name": "进入"
       },
       "desc": {
-        "data": "作品简介：\r从来都记忆模糊，记不得都去了哪些地方，看了哪些风景，遇到哪些人。尽管同学说，去旅行不在于记忆，而在于当时餐，午餐，晚餐。或许吃得不好，可是却依旧为对方擦去嘴角的油渍。风景如何，其实并不重要。"
+        "data":
+          "作品简介：\r从来都记忆模糊，记不得都去了哪些地方，看了哪些风景，遇到哪些人。尽管同学说，去旅行不在于记忆，而在于当时餐，午餐，晚餐。或许吃得不好，可是却依旧为对方擦去嘴角的油渍。风景如何，其实并不重要。"
       }
     },
     "board": {
@@ -94,5 +285,59 @@
       "close": "评论功能已关闭",
       "notice": "分享你的想法！"
     }
+  },
+  "card": {
+    "imgLoop": "图片轮播",
+    "img": "图片",
+    "media": "图片",
+    "title": "标题",
+    "subtitle": "副标题",
+    "paragraph": "正文",
+    "button": "按钮",
+    "preview": "封面图片",
+    "worldName": "名称",
+    "author": "作者",
+    "version": "版本",
+    "updateTime": "更新时间",
+    "viewTimesImg": "浏览次数图标",
+    "viewTimes": "浏览次数",
+    "size": "大小",
+    "menu": "菜单",
+    "logo": "图标",
+    "businessName": "主标题",
+    "tagline": "副标题",
+    "qq": "QQ号",
+    "pic": "头像",
+    "desc": "名称",
+    "md": "markdown文档",
+    "board": "绘图板",
+    "comment": "评论",
+    "vipRead": "VIP阅读权限",
+    "openBoard": "打开绘图板",
+    "switchComment": "评论是否开启",
+    "pageList": "页面列表",
+    "footer": "页脚",
+    "toc": "TOC设置",
+    "download": "下载",
+    "enter": "进入",
+    "innerModal": "内部模态框",
+    "bigFile": "大文件",
+    "iframe": "iframe"
+  },
+  "field": {
+    "fileId": "字段",
+    "fileType": "字段类型",
+    "link": "链接",
+    "src": "地址",
+    "name": "名字",
+    "text": "文本",
+    "desc": "描述",
+    "data": "数据",
+    "title": "标题",
+    "extraMsg": "额外信息",
+    "channel": "渠道",
+    "number": "数字",
+    "width": "宽度",
+    "height": "高度"
   }
 }

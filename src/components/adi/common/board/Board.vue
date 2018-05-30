@@ -55,6 +55,14 @@ const initPreview = (data, callback) => {
 
 export default {
   name: 'AdiBoard',
+  bedbclick: true,
+  dblclick(context) {
+    if (Boolean(window.mxClient)) {
+      context.$store.dispatch('setActivePropertyOptions', {visible: true})
+    } else {
+      setTimeout(this.dblclick(context), 500)
+    }
+  },
   render(h) {
     let self = this
 

@@ -3,13 +3,15 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import VueI18n from 'vue-i18n'
-import '@/assets/iconfont/iconfont.css'
 import 'element-ui/lib/theme-chalk/index.css'
 import Viewport from './Viewport.vue'
 import { editorModule, userModule, gitlabModule } from '@/store'
 import ElementUI from 'element-ui'
 import { transfer } from 'vuex-iframe-sync'
 import { messages as i18nMessages, locale } from '@/lib/utils/i18n'
+import handleMessage from '@/lib/iframe'
+
+window.addEventListener('message', handleMessage)
 
 Vue.config.productionTip = false
 Vue.use(Vuex)
